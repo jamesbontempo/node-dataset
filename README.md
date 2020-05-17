@@ -1,5 +1,13 @@
 # node-dataset
 
+## Table of contents
+- [Background](#background)
+- [Introduction](#introduction)
+- [Constructor](#constructor)
+- [Basic methods](#basic-methods)
+- [Data manipulation methods](#data-manipulation-methods)
+- [Input and output methods](#input-and-output-methods)
+
 ## Background
 This is a node module for working with data sets. Its design is largely inspired by work with SQL databases, and a desire to be able to manipulate data using similar features and functions; including the ability to join multiple sets of data. It also aims to provide a way to pull data of multiple types from multiple sources and work with all of that data together in one simple, unified manner.
 
@@ -41,16 +49,20 @@ These examples also demonstrate a few important things:
 * Almost all methods return a DataSet allowing for "chainable" statements.
 * File and database retrieval is asynchronous and the related methods return a Promise.
 
+Also, with the exception of some basic `set` methods, DataSets are immutable: calling their data manipulation methods will return a new DataSet rather than changing their underlying data.
+
 Once a DataSet has been created, there are many ways that it can be manipulated.
 
 For example, using the base DataSets created above, you could select just the data for a specified set of fields from one DataSet into a new DataSet, and rename the fields using the "as" keyword:
 ```js
 const college = education.select("fips as fips_code, college_or_higher as percent_college");
 ```
+
 Or you could filter the data into a new DataSet:
 ```js
 const some_states = fips.filter("state = 'Maryland' or state like 'Cali%' or state in ('New York','Texas')");
 ```
+
 Using chained methods, you could also perform the select and filter methods in sequence:
 ```js
 const some_other_states = fips
@@ -58,12 +70,14 @@ const some_other_states = fips
   .filter("state in ('Illinois','Kentucky','Colorado')")
  );
  ```
+ 
 A DataSet can also be joined with other DataSets to create new a DataSet:
  ```js
  const fips_education_ = fips
   .join("education", "inner", "fips", "fips")
   .join("population", "inner", "fips", "fips.fips");
  ```
+ 
 This example demonstrates another important thing: when DataSets are joined, the fields in the resulting DataSet are named by combining the name of the underlying DataSets and their fields ("fips.fips" in the example above). This ensures that there aren't any problems if the same field name is used in multiple DataSets.
 
 Aggregations can also be performed on a DataSet:
@@ -252,7 +266,7 @@ For those who prefer SQL-style naming, the `limit` method is a replacement for `
 const new_dataset = dataset.limit(25);
 ```
 
-## Input/Output methods
+## Input and output methods
 
 ### fromFile
 The `fromFile` method populates a new DataSet using data in a file.
