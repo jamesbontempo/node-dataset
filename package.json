@@ -1,9 +1,13 @@
 {
   "name": "node-dataset",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A node.js module for working with data sets",
   "main": "index.js",
   "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jamesbontempo/node-dataset.git"
+  },
   "keywords": [
     "data",
     "SQL",
