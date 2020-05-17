@@ -5,20 +5,27 @@
 - [Introduction](#introduction)
 - [Constructor](#constructor)
 - [Basic methods](#basic-methods)
--- [getName](#getname)
--- [setName](#setname)
--- [getFields](#getfields)
--- [setFields](#setfields)
--- [getData](#getdata)
--- [setData](#setdata)
+  - [getName](#getname)
+  - [setName](#setname)
+  - [getFields](#getfields)
+  - [setFields](#setfields)
+  - [getData](#getdata)
+  - [setData](#setdata)
 - [Data manipulation methods](#data-manipulation-methods)
--- [select](#select)
--- [join](#join)
--- [filter (where)](#filter--where-)
--- [sort (orderby)](#sort--orderby-)
--- [aggregate](#aggregate)
--- [slice (limit)](#slice--limit-)
-- [Input and output methods](#input-and-output-methods)
+  - [select](#select)
+  - [join](#join)
+  - [filter | where](#filter-|-where)
+  - [sort | orderby](#sort-|-orderby)
+  - [aggregate](#aggregate)
+  - [slice | limit](#slice-|-limit)
+- [Input/Output methods](#input/output-methods)
+  - [fromFile](#fromfile)
+  - [fromMySQL](#frommysql)
+  - [fromMongoDB](#frommongodb)
+  - [fromJSON](#fromjson)
+  - [fromArray](#fromarray)
+  - [toFile](#tofile)
+  - [toJSON](#tojson)
 
 ## Background
 This is a node module for working with data sets. Its design is largely inspired by work with SQL databases, and a desire to be able to manipulate data using similar features and functions; including the ability to join multiple sets of data. It also aims to provide a way to pull data of multiple types from multiple sources and work with all of that data together in one simple, unified manner.
@@ -212,7 +219,7 @@ Example:
 const new_dataset = dataset.join(d2, "left", "d1_field1, d1_field2", "d2_field1, d2_field2");
 ```
 
-### filter (where)
+### filter | where
 The `filter` method returns a new DataSet created by filter the current DataSet for a subset of data.
 
 Parameters:
@@ -232,7 +239,7 @@ For those who prefer SQL-style naming, the `where` method is a direct replacemen
 const new_dataset = dataset.where("field1 > 100 and field2 like '%something%' and field3 is not null");
 ```
 
-### sort (orderby)
+### sort | orderby 
 The `sort` method returns a new DataSet with the data sorted.
 
 Parameters:
@@ -262,7 +269,7 @@ const new_dataset = dataset.aggregate("field1, field2, min(field3), max(field4)"
 ```
 Supported aggregate functions include: `count`, `min` (minimum), `max` (maximum), `sum`, `avg` (average), `var` (variance), `std` (standard deviation).
 
-### slice (limit)
+### slice | limit
 The `slice` method returns a new DataSet from a slice of the data in the current DataSet (using zero-based array indexing)
 
 Parameters:
@@ -325,19 +332,6 @@ const dataset = await new ds.DataSet("test").fromMongoDB("mongodb://localhost:27
 
 Note: Unless set earlier, as in the example above, the `name` of a new DataSet created using the `fromMongoDB` method will be `null`.
 
-### fromArray
-The `fromArray` method populates a new DataSet from an array.
-
-Parameters:
-* `array` (array) - an array containing the name, fields and data for the DataSet
-
-Example:
-```js
-const dataset = new ds.DataSet().fromArray(["test", "field1, field2", [[1, "a"], [2, "b"]]);
-```
-
-Note: this method is used exstensively internally to create new DataSets, but may not be of significant use in an application.
-
 ### fromJSON
 The `fromJSON` method populates a new DataSet from an array of JSON objects.
 
@@ -350,6 +344,19 @@ const dataset = new ds.DataSet("test").fromJSON([{field1: 1, field2: "a"}, {fiel
 ```
 
 Note: Unless set earlier, as in the example above, the `name` of a new DataSet created using the `fromJSON` method will be `null`.
+
+### fromArray
+The `fromArray` method populates a new DataSet from an array.
+
+Parameters:
+* `array` (array) - an array containing the name, fields and data for the DataSet
+
+Example:
+```js
+const dataset = new ds.DataSet().fromArray(["test", "field1, field2", [[1, "a"], [2, "b"]]);
+```
+
+Note: this method is used exstensively internally to create new DataSets, but may not be of significant use in an application.
 
 ### toFile
 The `toFile` method writes the current DataSet to a file.
