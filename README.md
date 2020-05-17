@@ -18,7 +18,7 @@
   - [sort | orderby](#sort-|-orderby)
   - [aggregate](#aggregate)
   - [slice | limit](#slice-|-limit)
-- [Input-Output methods](#input-output-methods)
+- [Input/Output methods](#input/output-methods)
   - [fromFile](#fromfile)
   - [fromMySQL](#frommysql)
   - [fromMongoDB](#frommongodb)
@@ -285,7 +285,7 @@ For those who prefer SQL-style naming, the `limit` method is a replacement for `
 const new_dataset = dataset.limit(25);
 ```
 
-## Input and output methods
+## Input/Output methods
 
 ### fromFile
 The `fromFile` method populates a new DataSet using data in a file.
