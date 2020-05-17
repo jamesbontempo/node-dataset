@@ -48,7 +48,7 @@ var d = new ds.DataSet(
   ]
 );
 ```
-When creating a new DataSet you can choose to supply all three elements, some of them, or nome of them.
+When creating a new DataSet you can choose to supply all three elements, some of them, or none of them.
 
 You can also create a DataSet from a file (CSV, JSON) or a database (MySQL, MongoDB):
 ```js
