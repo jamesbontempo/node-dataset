@@ -1,0 +1,22 @@
+{
+  "name": "node-dataset",
+  "version": "1.0.0",
+  "description": "A node.js module for working with data sets",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [
+    "data",
+    "SQL",
+    "CSV",
+    "JSON",
+    "MySQL",
+    "MongoDB"
+  ],
+  "author": "James BonTempo",
+  "license": "MIT",
+  "dependencies": {
+    "boolean-parser": "0.0.2",
+    "mongodb": "^3.5.7",
+    "mysql": "^2.18.1"
+  }
+}
