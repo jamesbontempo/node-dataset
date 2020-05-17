@@ -18,7 +18,7 @@
   - [sort | orderby](#sort-|-orderby)
   - [aggregate](#aggregate)
   - [slice | limit](#slice-|-limit)
-- [Input/Output methods](#input/output-methods)
+- [Input-Output methods](#input-output-methods)
   - [fromFile](#fromfile)
   - [fromMySQL](#frommysql)
   - [fromMongoDB](#frommongodb)
