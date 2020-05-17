@@ -211,8 +211,8 @@ The `join` method returns a new DataSet created by joining the current DataSet w
 
 Parameters:
 * `dataset` (DataSet) - the DataSet to join with the current DataSet with
-* `type` (string) - the type of join to perform; options are "inner", "left", "right" and "cross".
-* `fieldList1` (string) - a comma-separated list of fields from the current DataSet to use to for the join
+* `type` (string) - the type of join to perform: "inner", "left", "right" or "cross".
+* `fieldList1` (string) - a comma-separated list of fields from the current DataSet to use for the join
 * `fieldList2` (string) - a comma-separated list of fields from the joined to DataSet to use for the join
 
 Example:
