@@ -29,7 +29,7 @@
   - [toJSON](#tojson)
 
 ## Background
-This is a node module for working with data sets. Its design is largely inspired by work with SQL databases, and a desire to be able to manipulate data using similar features and functions; including the ability to join multiple sets of data. It also aims to provide a way to pull data of multiple types from multiple sources and work with all of that data together in one simple, unified manner.
+This is a node module for working with data sets. Its design is largely inspired by work with SQL databases, and a desire to be able to manipulate data using similar features and functions; including the ability to join multiple sets of data. It also aims to provide a way to pull data of multiple types from multiple sources and work with all of it together in one simple, unified manner.
 
 ## Introduction
 Logically, a DataSet is analogous to a table in a database, or a data file (e.g., a CSV or Excel file), with a name, a set of fields, and data. You can create a new DataSet by supplying these three elements:
