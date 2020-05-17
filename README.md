@@ -1,7 +1,7 @@
 # node-dataset
 
 ## Background
-This is a node module for working with data sets. It's design is largely inspired by work with SQL databases, and a desire to be able to manipulate data using some of the same features and functions; including the ability to join multiple sets of data. It also aims to provide a way to pull data from multiple types of sources and work with all of that data together in one simple, unified manner.
+This is a node module for working with data sets. Its design is largely inspired by work with SQL databases, and a desire to be able to manipulate data using similar features and functions; including the ability to join multiple sets of data. It also aims to provide a way to pull data of multiple types from multiple sources and work with all of that data together in one simple, unified manner.
 
 ## Introduction
 Logically, a DataSet is analogous to a table in a database, or a data file (e.g., a CSV or Excel file), with a name, a set of fields, and data. You can create a new DataSet by supplying these three elements:
@@ -76,19 +76,88 @@ const ten_most_educated = fips
 );
 ```
 
-## Basic get/set methods
+## Constructor
+The DataSet constructor creates a new instace of a DataSet.
+
+Parameters:
+* `name` (string) - the name of the DataSet
+* `fields` (string|array) - a comma-separated list, or array, of fields in the DataSet (if a string is supplied, it will be split using `/\s*,\s*/`) 
+* `data` (array) - the data in the DataSet
+
+Example:
+```js
+const dataset = new ds.DataSet(); // name will be null, fields will be [], data will be []
+
+const dataset = new ds.DataSet("test", "field1, field2", [[1, "a"], [2, "b"]]);
+
+const dataset = new ds.DataSet("test", ["field1", "field2"], [[1, "a"], [2, "b"]]);
+```
+
+## Basic methods
 
 ### getName
+The `getName` method returns a string containing the name of the current DataSet.
+
+Example:
+```js
+const name = dataset.getName();
+```
 
 ### setName
+The `setName` method sets the name of the current DataSet.
+
+Parameters:
+* `name` (string) - the new name of the DataSet
+
+Example:
+```js
+dataset.setName("new_name");
+```
 
 ### getFields
+The `getFields` method returns an array containing the fields of the current DataSet.
+
+Example:
+```js
+const fields = dataset.getFields();
+```
 
 ### setFields
+The `setFields` method sets the fields of the current DataSet.
+
+Parameters:
+* `fields` (string|array) - a comma-separated list, or array, of fields in the DataSet
+
+Example:
+```js
+dataset.setFields("field1, field2");
+
+dataset.setFields(["field1", "field2"]);
+```
 
 ### getData
+The `getData` method returns an array of arrays containing the data of the current DataSet.
+
+Example:
+```js
+const data = dataset.getData();
+```
 
 ### setData
+The `setData` method sets the data of the current DataSet.
+
+Example:
+```js
+dataset.setData([[1, "a"], [2, "b"]]);
+```
+
+### count
+The `count` method returns the number of records in the current DataSet
+
+Example:
+```js
+const count = dataset.count();
+```
 
 ## Data manipulation methods
 
