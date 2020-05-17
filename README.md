@@ -77,30 +77,86 @@ const ten_most_educated = fips
 ```
 ## Data manipulation methods
 The `select` method returns a new DataSet containing the data for a set of fields from the orginal DataSet.
+
 Parameters:
 * `fieldList` (string) - a comma-separated list of fields to select, which can be renamed using the "as" keyword.
+
 Example:
 ```js
 const new_d = d.select("field1 as one, field2 as two, field3 as three");
 ```
 The `join` method returns a new DataSet created by joining the current DataSet with another DataSet.
+
 Parameters:
 * `dataset` (DataSet) - the DataSet to join with the current DataSet with
 * `type` (string) - the type of join to perform; options are "inner", "left", "right" and "cross".
 * `fieldList1` (string) - a comma-separated list of fields from the current DataSet to use to for the join
 * `fieldList2` (string) - a comma-separated list of fields from the joined to DataSet to use for the join
+
+Example:
 ```js
 const new_d = d1.join(d2, "left", "d1_field1, d1_field2", "d2_field1, d2_field2");
 ```
-The `filter` method returns a new DataSet created by filter the current DataSet for a subset of data
+The `filter` method returns a new DataSet created by filter the current DataSet for a subset of data.
+
 Parameters:
 * `filterStatement` (string) - a statement describing the filter to be applied
 * `useEval` (boolean) - whether to use the `new Function()` constructor (similar to eval) to evaluate the `filterStatement`
+
+Example:
 ```js
-const new_d = d.filter("where field1 > 100 and field2 like '%something%' and field3 is not null");
+const new_d = d.filter("field1 > 100 and field2 like '%something%' and field3 is not null");
 ```
-Supported comparison operators and functions: =, <, >, <=, >=, !=, <>, (not) in, (not) like, (not) between, is (not) null.
+Supported comparison operators and functions include: `=`, `<`, `>`, `<=`, `>=`, `!=`, `<>`, `(not) in` (e.g. `in (1, 2, 3)` or `not in ('a', 'b, 'c')`), `(not) like` (e.g., `like 'cali%'` or `not like '%york'`), `(not) between` (e.g., `between 0 and 10` or `not between 1000 and 2000`), `is (not) null` (e.g., `field1 is null` or `field2 is not null`).
 
 A note about `useEval`: All filter conditions, when matched against data, are ultimately reduced to a boolean statement; for example `(true || (false && true))`. At this point, if `useEval` is `true`, the boolean statment will be evaluated using the `new Function()` constructor, which is safer than using `eval` directly. However, if this is concerning, when `useEval` is set to `false` the "boolean-parser" module will be used to evaluate the statement. In testing, setting `useEval` to true regularly cuts execution time in half.
+
+For those who prefer SQL-style naming, the `where` method is a direct replacement for `filter`:
+```js
+const new_d = d.where("field1 > 100 and field2 like '%something%' and field3 is not null");
+```
+
+The `sort` method returns a new DataSet with the data sorted.
+
+Parameters:
+* `sortStatement` (string) - a statement describing how to sort the DataSet
+
+Example:
+```js
+const new_d = d.sort("field1 desc, field 2");
+```
+If no sort order ("asc" or "desc") is supplied, the default is "asc".
+
+For those who prefer SQL-style naming, the `orderby` method is a direct replacement for `sort`:
+```js
+const new_d = d.where("field1 > 100 and field2 like '%something%' and field3 is not null");
+```
+
+The `aggregate` method returns a new DataSet with aggregate functions performed on fields in the current DataSet.
+
+Parameters:
+* `aggregationList` (string) - a comma-separated list of aggregate functions to perform on fields
+* `groupList` (string) - a comma-separated list of fields to group by
+
+Example:
+```js
+const new_d = d.aggregate("field1, field2, min(field3), max(field4)", "field1, field2");
+```
+Supported aggregate functions include: `count`, `min` (minimum), `max` (maximum), `sum`, `avg` (average), `var` (variance), `std` (standard deviation).
+
+The `slice` method returns a new DataSet from a slice of the data in the current DataSet (using zero-based array indexing)
+
+Parameters:
+* `begin` - the array index indicating where the slice should begin
+* `end` - the array index indicating where the slice should end (not included in the results)
+
+Example:
+```js
+const new_d = d.slice(100, 125);
+```
+For those who prefer SQL-style naming, the `limit` method is a replacement for `slice` for which `begin` is always `0`:
+```js
+const new_d = d.limit(25);
+```
 
 ## Input/Output methods
