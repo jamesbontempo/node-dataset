@@ -11,6 +11,7 @@
   - [setFields](#setfields)
   - [getData](#getdata)
   - [setData](#setdata)
+  - [count](#count)
 - [Data manipulation methods](#data-manipulation-methods)
   - [select](#select)
   - [join](#join)
