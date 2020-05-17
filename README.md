@@ -288,7 +288,7 @@ const new_dataset = dataset.limit(25);
 ## Input/Output methods
 
 ### fromFile
-The `fromFile` method populates a new DataSet using data in a file.
+The `fromFile` method returns a `Promise` to populate a new DataSet using data in a file.
 
 Parameters:
 * `filePath` (string) - the path to the file containing the data from which to construct the DataSet
@@ -297,12 +297,14 @@ Parameters:
 Example:
 ```js
 const dataset = await new ds.DataSet().fromFile("./data/test.json", "json");
+
+new ds.DataSet().fromFile("./data/test.json", "json").then ( // do something with the DataSet returned );
 ```
 
 Note: the `name` of the new DataSet will be set to the name of the data file without its extension.
 
 ### fromMySQL
-The `fromMySQL` method populates a new DataSet using MySQL query results.
+The `fromMySQL` method returns a `Promise` to populate a new DataSet using MySQL query results.
 
 Paramters:
 * `options` (object) - the options for the MySQL connection
@@ -311,12 +313,14 @@ Paramters:
 Example:
 ```js
 const dataset = await new ds.DataSet("test").fromMySQL({host: "localhost", user: "foo", password: "bar", database: "test"}, "select * from table")
+
+new ds.DataSet("test").fromMySQL({host: "localhost", user: "foo", password: "bar", database: "test"}, "select * from table").then( // do something with the DataSet returned );
 ```
 
 Note: Unless set earlier, as in the example above, the `name` of a new DataSet created using the `fromMySQL` method will be `null`. The `fields` of the new DataSet will be set to the fields returned by the query.
 
 ### fromMongoDB
-The `fromMongoDB` method populates a new DataSet using MongoDB query results.
+The `fromMongoDB` method returns a `Promise` to populate a new DataSet using MongoDB query results.
 
 Parameters:
 * `url` (string) - the url of the database
@@ -328,6 +332,8 @@ Parameters:
 Example:
 ```js
 const dataset = await new ds.DataSet("test").fromMongoDB("mongodb://localhost:27017", "test", "test", {}, {"_id": 0});
+
+new ds.DataSet("test").fromMongoDB("mongodb://localhost:27017", "test", "test", {}, {"_id": 0}).then( // do something with the DataSet returned );
 ```
 
 Note: Unless set earlier, as in the example above, the `name` of a new DataSet created using the `fromMongoDB` method will be `null`.
