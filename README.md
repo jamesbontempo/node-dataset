@@ -76,16 +76,31 @@ const ten_most_educated = fips
 );
 ```
 ## Data manipulation methods
-`select`
-`join`
-`filter` | `where`
-`sort` | `orderby`
-`aggregate`
-`slice` | `limit`
+The `select` method returns a new DataSet containing the data for a set of fields from the orginal DataSet.
+Parameters:
+* `fieldList` (string) - a comma-separated list of fields to select, which can be renamed using the "as" keyword.
+Example:
+```js
+const new_d = d.select("field1 as one, field2 as two, field3 as three");
+```
+The `join` method returns a new DataSet created by joining the current DataSet with another DataSet.
+Parameters:
+* `dataset` (DataSet) - the DataSet to join with the current DataSet with
+* `type` (string) - the type of join to perform; options are "inner", "left", "right" and "cross".
+* `fieldList1` (string) - a comma-separated list of fields from the current DataSet to use to for the join
+* `fieldList2` (string) - a comma-separated list of fields from the joined to DataSet to use for the join
+```js
+const new_d = d1.join(d2, "left", "d1_field1, d1_field2", "d2_field1, d2_field2");
+```
+The `filter` method returns a new DataSet created by filter the current DataSet for a subset of data
+Parameters:
+* `filterStatement` (string) - a statement describing the filter to be applied
+* `useEval` (boolean) - whether to use the `new Function()` constructor (similar to eval) to evaluate the `filterStatement`
+```js
+const new_d = d.filter("where field1 > 100 and field2 like '%something%' and field3 is not null");
+```
+Supported comparison operators and functions: =, <, >, <=, >=, !=, <>, (not) in, (not) like, (not) between, is (not) null.
+
+A note about `useEval`: All filter conditions, when matched against data, are ultimately reduced to a boolean statement; for example `(true || (false && true))`. At this point, if `useEval` is `true`, the boolean statment will be evaluated using the `new Function()` constructor, which is safer than using `eval` directly. However, if this is concerning, when `useEval` is set to `false` the "boolean-parser" module will be used to evaluate the statement. In testing, setting `useEval` to true regularly cuts execution time in half.
 
 ## Input/Output methods
-`fromFile`
-`fromMySQL`
-`fromMongoDB`
-`fromArray`
-`fromJSON`
