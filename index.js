@@ -144,7 +144,7 @@ class DataSet {
     /**
      * Convert the DataSet to JSON format
      */
-    toJSON() { return io.toJSON(this.fields, this.data); }
+    toJSON() { return JSON.parse(io.toJSON(this.fields, this.data, {})); }
 
     /**
      * Write the DataSet to a file
