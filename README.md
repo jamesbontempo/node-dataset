@@ -378,7 +378,7 @@ Parameters:
 * `type` (string) - the type of file/format of the data ("json" or "csv")
 * `options` (object) - options for the file
 ** for JSON `{pretty: (boolean), space: (integer)}` - the default is "unpretty" JSON
-** for a CSV file `{delimiter: (string), quote: (string)}` - the default delimiter is "," and the default quote is "\"";
+** for a CSV file `{delimiter: (string), quote: (string)}` - the default delimiter is "," and the default quote is "\\"";
 
 Example:
 ```js
