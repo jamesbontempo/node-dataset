@@ -1,6 +1,6 @@
 # node-dataset
 
-`node-dataset` is a node module for working with data sets. Its design is largely inspired by work with SQL databases, and its development was motivated by a desire to be able to manipulate data using similar features and functions, including the ability to join multiple sets of data together. It aims to provide a way to pull data of multiple types, from multiple sources, and work with all of that data at once in a simple, unified manner.
+`node-dataset` is a node module for working with data sets. Its design is largely inspired by work with SQL databases, and its development was motivated by a desire to be able to manipulate data within a JavaScript application using similar features and functions, including the ability to join multiple sets of data together. It aims to provide an easy way to retrieve data of multiple types from multiple sources, and work with all of that data together in a single, unified manner.
 
 ## Table of contents
 - [Introduction](#introduction)
