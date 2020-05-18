@@ -30,12 +30,12 @@
   - [toJSON](#tojson)
 
 ## Introduction
-Logically, a `DataSet` is analogous to a table in a database or a data file (e.g., a CSV file). A DataSet has a name, a set of fields, and data. You can create a new `DataSet` by supplying these three elements:
+Logically, a `DataSet` is analogous to a table in a database or a data file (e.g., a CSV file). A `DataSet` has a name, a set of fields, and data. You can create a new `DataSet` by supplying these three elements:
 
 ```js
 const ds = require("node-dataset");
 
-var dataset = new ds.DataSet(
+const dataset = new ds.DataSet(
   "test",
   "fips, county, state",
   [
@@ -45,6 +45,21 @@ var dataset = new ds.DataSet(
     [16001, "Ada", "Idaho"]
   ]
 );
+```
+
+`console.log(dataset)` will produce the following:
+
+```js
+DataSet {
+  name: 'test',
+  fields: [ 'fips', 'county', 'state' ],
+  data: [
+    [ 45001, 'Abbeville', 'South Carolina' ],
+    [ 22001, 'Acadia', 'Louisiana' ],
+    [ 51001, 'Accomack', 'Virginia' ],
+    [ 16001, 'Ada', 'Idaho' ]
+  ]
+}
 ```
 
 You can also create a `DataSet` from a file (CSV, JSON) or a database (MySQL, MongoDB):
@@ -63,7 +78,7 @@ const fips = await new ds.DataSet("fips").fromMongoDB(
  );
 ```
 These examples also demonstrate a few important things:
-* Almost all methods return a `DataSet` allowing for "chainable" statements.
+* Many methods return a `DataSet` allowing for "chainable" statements.
 * File and database retrieval is asynchronous.
 
 Once a `DataSet` has been created, there are many ways that it can be manipulated.
@@ -343,7 +358,7 @@ Example:
 ```js
 const dataset = await new ds.DataSet().fromFile("./data/test.json", "json");
 
-new ds.DataSet().fromFile("./data/test.json", "json").then ( ...do something with the DataSet... );
+new ds.DataSet().fromFile("./data/test.json", "json").then( ...do something with the DataSet... );
 ```
 
 Note: the `name` of the new `DataSet` will be set to the name of the data file without its extension.
