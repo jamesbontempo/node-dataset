@@ -30,7 +30,7 @@ class DataSet {
      * Set the name of the DataSet
      * @param {string} name - name of the DataSet
      */
-    setName(name) { this.name = (name && typeof(name) === "string" && name.length > 0) ? name : null; }
+    setName(name) { this.name = (name && typeof(name) === "string" && name.length > 0) ? name : null; return this; }
 
     /**
      * Get the fields of the DataSet
@@ -41,7 +41,7 @@ class DataSet {
      * Set the fields of the DataSet
      * @param {string|object} fields - comma separated list, or array, of fields in the DataSet
      */
-    setFields(fields) { this.fields = (fields && fields.length > 0) ? (typeof(fields) === "string") ? fields.split(/\s*,\s*/) : (Array.isArray(fields)) ? fields : [] : []; }
+    setFields(fields) { this.fields = (fields && fields.length > 0) ? (typeof(fields) === "string") ? fields.split(/\s*,\s*/) : (Array.isArray(fields)) ? fields : [] : []; return this; }
 
     /**
      * Get the data of the DataSet
@@ -52,8 +52,11 @@ class DataSet {
      * Set the data of the DataSet
      * @param {object} data - rray of arrays comprising the data of the DataSet
      */
-    setData(data) { this.data = (data && Array.isArray(data) && data.length > 0) ? data : []; }
+    setData(data) { this.data = (data && Array.isArray(data) && data.length > 0) ? data : []; return this; }
 
+    /**
+     * Get the number of records in the DataSet
+     */
     count() { return this.data.length; }
 
     /**
@@ -108,35 +111,35 @@ class DataSet {
     fromArray(array) { this.name = array[0]; this.fields = array[1]; this.data = array[2]; return this; }
 
     /**
-     * Populate a DataSet from an array of JSON objects
+     * Populate the DataSet from an array of JSON objects
      * @param {array} json - an array of JSON objects where the keys are the fields and the values are the data
      */
-    fromJSON(json) { return new DataSet().fromArray([this.name].concat(io.fromJSON(json))); }
+    fromJSON(json) { this.fromArray([this.name].concat(io.fromJSON(json))); return this; }
 
     /**
-     * Populate a DataSet using data in a file
+     * Populate the DataSet using data in a file
      * @param {string} filePath - the path to the file containing the data from which to construct the DataSet
      * @param {string} type - the type of file/format of the data (json or csv)
      * @param {object} options - options for the file (prettify json, set delimiter and quote for csv)
      */
-    async fromFile(filePath, type) { return new DataSet().fromArray(await io.fromFile(filePath, type)); }
+    async fromFile(filePath, type) { this.fromArray(await io.fromFile(filePath, type)); return this; }
 
     /**
-     * Populate a DataSet using MySQL query results
+     * Populate the DataSet using MySQL query results
      * @param {Object} options - options for the MySQL connection
      * @param {string} query - query to retrieve the data for the DataSet
      */
-    async fromMySQL(options, query) { return new DataSet().fromArray([this.name].concat(await io.fromMySQL(options, query))); }
+    async fromMySQL(options, query) { this.fromArray([this.name].concat(await io.fromMySQL(options, query))); return this; }
 
     /**
-     * Populate a DataSet using MongoDB query results
+     * Populate the DataSet using MongoDB query results
      * @param {string} url - url of the database
      * @param {string} database - name of the database
      * @param {string} collection - name of the connection
      * @param {object} query - the query to execute to retrieve results
      * @param {object} project - the projection to execute on the results
      */
-    async fromMongoDB(url, database, collection, query, projection) { return new DataSet().fromArray([this.name].concat(await io.fromMongoDB(url, database, collection, query, projection))); }
+    async fromMongoDB(url, database, collection, query, projection) { this.fromArray([this.name].concat(await io.fromMongoDB(url, database, collection, query, projection))); return this; }
 
     /**
      * Convert the DataSet to JSON format

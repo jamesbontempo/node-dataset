@@ -1,7 +1,8 @@
 # node-dataset
 
+`node-dataset` is a node module for working with data sets. Its design is largely inspired by work with SQL databases, and its development was motivated by a desire to be able to manipulate data using similar features and functions, including the ability to join multiple sets of data together. It aims to provide a way to pull data of multiple types, from multiple sources, and work with all of that data at once in a simple, unified manner.
+
 ## Table of contents
-- [Background](#background)
 - [Introduction](#introduction)
 - [Constructor](#constructor)
 - [Basic methods](#basic-methods)
@@ -28,16 +29,13 @@
   - [toFile](#tofile)
   - [toJSON](#tojson)
 
-## Background
-`node-dataset` is a node module for working with data sets. Its design is largely inspired by work with SQL databases, and is motivated by a desire to be able to manipulate data using similar features and functions; including the ability to join multiple sets of data together. It also aims to provide a way to pull data of multiple types from multiple sources and work with all of it at once in a simple, unified manner.
-
 ## Introduction
-Logically, a DataSet is analogous to a table in a database, or a data file (e.g., a CSV or Excel file), with a name, a set of fields, and data. You can create a new DataSet by supplying these three elements:
+Logically, a `DataSet` is analogous to a table in a database or a data file (e.g., a CSV file). A DataSet has a name, a set of fields, and data. You can create a new `DataSet` by supplying these three elements:
 
 ```js
 const ds = require("node-dataset");
 
-var d = new ds.DataSet(
+var dataset = new ds.DataSet(
   "test",
   "fips, county, state",
   [
@@ -49,11 +47,11 @@ var d = new ds.DataSet(
 );
 ```
 
-You can also create a DataSet from a file (CSV, JSON) or a database (MySQL, MongoDB):
+You can also create a `DataSet` from a file (CSV, JSON) or a database (MySQL, MongoDB):
 ```js
-const education = await new ds.DataSet("education").fromFile("./data/education.csv", "csv");
+const education = await new ds.DataSet().fromFile("./data/education.csv", "csv");
 
-const population = await new ds.DataSet("population").fromFile("./data/population.json", "json");
+const population = await new ds.DataSet().fromFile("./data/population.json", "json");
 
 const age = await new ds.DataSet("age").fromMySQL(
   {host: "localhost", user: "foo", password: "bar", database: "datasets"},
@@ -65,24 +63,27 @@ const fips = await new ds.DataSet("fips").fromMongoDB(
  );
 ```
 These examples also demonstrate a few important things:
-* Almost all methods return a DataSet allowing for "chainable" statements.
-* File and database retrieval is asynchronous and the related methods return a Promise.
+* Almost all methods return a `DataSet` allowing for "chainable" statements.
+* File and database retrieval is asynchronous.
 
-Also, with the exception of some basic `set` methods, DataSets are immutable: calling their data manipulation methods will return a new DataSet rather than changing their underlying data.
+Once a `DataSet` has been created, there are many ways that it can be manipulated.
 
-Once a DataSet has been created, there are many ways that it can be manipulated.
+Note: A `DataSet` is largely immutable and calling its data manipulation methods will return a new `DataSet` rather than change its underlying data.
 
-For example, using the base DataSets created above, you could select just the data for a specified set of fields from one DataSet into a new DataSet, and rename the fields using the "as" keyword:
+For example, using a `DataSet` from the examples above, you could select just the data for a specified set of fields from one `DataSet` into a new `DataSet`, and rename the fields using the "as" keyword:
+
 ```js
 const college = education.select("fips as fips_code, college_or_higher as percent_college");
 ```
 
-Or you could filter the data into a new DataSet:
+Or you could filter the data from one `DataSet` into a new `DataSet`:
+
 ```js
 const some_states = fips.filter("state = 'Maryland' or state like 'Cali%' or state in ('New York','Texas')");
 ```
 
 Using chained methods, you could also perform the select and filter methods in sequence:
+
 ```js
 const some_other_states = fips
   .select("fips as fips_code, state, county")
@@ -90,16 +91,18 @@ const some_other_states = fips
  );
  ```
 
-A DataSet can also be joined with other DataSets to create new a DataSet:
+A `DataSet` can also be joined with another `DataSet` to create new a `DataSet`:
+
  ```js
  const fips_education_ = fips
   .join("education", "inner", "fips", "fips")
   .join("population", "inner", "fips", "fips.fips");
  ```
 
-This example demonstrates another important thing: when DataSets are joined, the fields in the resulting DataSet are named by combining the name of the underlying DataSets and their fields ("fips.fips" in the example above). This ensures that there aren't any problems if the same field name is used in multiple DataSets.
+This example demonstrates another important thing: when a `DataSet` is joined with another `DataSet`, the fields in the resulting `DataSet` are named by combining the name of each underlying `DataSet` and its fields (that's why the second join refers to `fips.fips` in the example above). This ensures that there aren't any problems if the same field name is used in more than one `DataSet`.
 
-Aggregations can also be performed on a DataSet:
+Aggregations can also be performed on a `DataSet`:
+
 ```js
 const ten_most_educated = fips
   .join("education", "inner", "fips", "fips")
@@ -110,16 +113,19 @@ const ten_most_educated = fips
 ```
 
 ## Constructor
-The DataSet constructor creates a new instace of a DataSet.
+The `DataSet` constructor creates a new instance of a `DataSet`.
 
 Parameters:
-* `name` (string) - the name of the DataSet
-* `fields` (string|array) - a comma-separated list, or array, of fields in the DataSet (if a string is supplied, it will be split using `/\s*,\s*/`)
-* `data` (array) - the data in the DataSet
+
+Name|Type|Description
+----|----|-----------
+`name`|string|the name of the DataSet
+`fields`|string \| array| a comma-separated list, or array, of fields in the DataSet (if a string is supplied, it will be split using `/\s*,\s*/`)
+`data`|array|an array of arrays containing the data in the DataSet (each subarray is essentially a record)
 
 Example:
 ```js
-const dataset = new ds.DataSet(); // name will be null, fields will be [], data will be []
+const dataset = new ds.DataSet(); // name will be null, fields will be [], and data will be []
 
 const dataset = new ds.DataSet("test", "field1, field2", [[1, "a"], [2, "b"]]);
 
@@ -129,7 +135,7 @@ const dataset = new ds.DataSet("test", ["field1", "field2"], [[1, "a"], [2, "b"]
 ## Basic methods
 
 ### getName
-The `getName` method returns a string containing the name of the current DataSet.
+The `getName` method returns a string containing the name of the current `DataSet`.
 
 Example:
 ```js
@@ -137,10 +143,13 @@ const name = dataset.getName();
 ```
 
 ### setName
-The `setName` method sets the name of the current DataSet.
+The `setName` method sets the name of the current `DataSet` and returns the `DataSet`.
 
 Parameters:
-* `name` (string) - the new name of the DataSet
+
+Name|Type|Description
+----|----|-----------
+`name`|string|the name
 
 Example:
 ```js
@@ -148,7 +157,7 @@ dataset.setName("new_name");
 ```
 
 ### getFields
-The `getFields` method returns an array containing the fields of the current DataSet.
+The `getFields` method returns an array containing the fields of the current `DataSet`.
 
 Example:
 ```js
@@ -156,10 +165,13 @@ const fields = dataset.getFields();
 ```
 
 ### setFields
-The `setFields` method sets the fields of the current DataSet.
+The `setFields` method sets the fields of the current `DataSet` and returns the `DataSet`.
 
 Parameters:
-* `fields` (string|array) - a comma-separated list, or array, of fields in the DataSet
+
+Name|Type|Description
+----|----|-----------
+`fields`|string \| array|a comma-separated list, or array, of fields
 
 Example:
 ```js
@@ -169,7 +181,7 @@ dataset.setFields(["field1", "field2"]);
 ```
 
 ### getData
-The `getData` method returns an array of arrays containing the data of the current DataSet.
+The `getData` method returns an array of arrays containing the data of the current `DataSet`.
 
 Example:
 ```js
@@ -177,7 +189,13 @@ const data = dataset.getData();
 ```
 
 ### setData
-The `setData` method sets the data of the current DataSet.
+The `setData` method sets the data of the current `DataSet` and returns the `DataSet`.
+
+Parameters:
+
+Name|Type|Description
+----|----|-----------
+`data`|array|an array of arrays of the data
 
 Example:
 ```js
@@ -185,7 +203,7 @@ dataset.setData([[1, "a"], [2, "b"]]);
 ```
 
 ### count
-The `count` method returns the number of records in the current DataSet
+The `count` method returns the number of records in the current `DataSet`.
 
 Example:
 ```js
@@ -195,24 +213,36 @@ const count = dataset.count();
 ## Data manipulation methods
 
 ### select
-The `select` method returns a new DataSet containing the data for a set of fields from the orginal DataSet.
+The `select` method returns a new `DataSet` containing the data for a subset of fields from the original `DataSet`.
 
 Parameters:
-* `fieldList` (string) - a comma-separated list of fields to select, which can be renamed using the "as" keyword.
+
+Name|Type|Description
+----|----|-----------
+`fieldList`|string|a comma-separated list of fields to select, which can be renamed using the "as" keyword.
 
 Example:
 ```js
 const new_dataset = dataset.select("field1, field2, field3 as three");
 ```
 
+Note: There is no equivalent to the SQL `select *` statement. If you wanted to create a new `DataSet` with all the same data as another `DataSet` you could do something like this:
+
+```js
+const new_dataset = new ds.DataSet("clone", dataset.getFields(), dataset.getData());
+```
+
 ### join
-The `join` method returns a new DataSet created by joining the current DataSet with another DataSet.
+The `join` method returns a new `DataSet` created by joining the current `DataSet` with another `DataSet`.
 
 Parameters:
-* `dataset` (DataSet) - the DataSet to join with the current DataSet with
-* `type` (string) - the type of join to perform: "inner", "left", "right" or "cross".
-* `fieldList1` (string) - a comma-separated list of fields from the current DataSet to use for the join
-* `fieldList2` (string) - a comma-separated list of fields from the joined to DataSet to use for the join
+
+Name|Type|Description
+----|----|-----------
+`dataset`|DataSet|the `DataSet` to join with the current `DataSet` with
+`type`|string|the type of join to perform: "inner", "left", "right" or "cross".
+`fieldList1`|string|a comma-separated list of fields from the current `DataSet` to use for the join
+`fieldList2`|string|a comma-separated list of fields from the joined to `DataSet` to use for the join
 
 Example:
 ```js
@@ -220,11 +250,14 @@ const new_dataset = dataset.join(d2, "left", "d1_field1, d1_field2", "d2_field1,
 ```
 
 ### filter | where
-The `filter` method returns a new DataSet created by filtering the current DataSet for a subset of data.
+The `filter` method returns a new `DataSet` created by filtering the current `DataSet` for a subset of data.
 
 Parameters:
-* `filterStatement` (string) - a statement describing the filter to be applied
-* `useEval` (boolean) - whether to use the `new Function()` constructor (similar to eval) to evaluate the `filterStatement`
+
+Name|Type|Description
+----|----|-----------
+`filterStatement`|string|a statement describing the filter to be applied
+`useEval`|boolean|whether to use the `new Function()` constructor (similar to eval) to evaluate the `filterStatement`
 
 Example:
 ```js
@@ -240,16 +273,19 @@ const new_dataset = dataset.where("field1 > 100 and field2 like '%something%' an
 ```
 
 ### sort | orderby
-The `sort` method returns a new DataSet with the data sorted.
+The `sort` method returns a new `DataSet` with the data sorted.
 
 Parameters:
-* `sortStatement` (string) - a statement describing how to sort the DataSet
+
+Name|Type|Description
+----|----|-----------
+`sortStatement`|string|a statement describing how to sort the `DataSet`
 
 Example:
 ```js
 const new_dataset = dataset.sort("field1 desc, field 2");
 ```
-If no sort order---"asc" for ascending, "desc" for descending---is supplied, the default is "asc".
+If no sort order&mdash;`asc` for ascending, `desc` for descending&mdash;is supplied, the default is `asc`.
 
 For those who prefer SQL-style naming, the `orderby` method is a direct replacement for `sort`:
 ```js
@@ -257,11 +293,14 @@ const new_dataset = dataset.orderby("field1 desc, field 2");
 ```
 
 ### aggregate
-The `aggregate` method returns a new DataSet with aggregate functions performed on fields in the current DataSet.
+The `aggregate` method returns a new `DataSet` with aggregate functions performed on fields in the current `DataSet`.
 
 Parameters:
-* `aggregationList` (string) - a comma-separated list of aggregate functions to perform on fields
-* `groupList` (string) - a comma-separated list of fields to group by
+
+Name|Type|Description
+----|----|-----------
+`aggregationList`|string|a comma-separated list of aggregate functions to perform on fields
+`groupList`|string|a comma-separated list of fields to group by
 
 Example:
 ```js
@@ -270,11 +309,14 @@ const new_dataset = dataset.aggregate("field1, field2, min(field3), max(field4)"
 Supported aggregate functions include: `count`, `min` (minimum), `max` (maximum), `sum`, `avg` (average), `var` (variance), and `std` (standard deviation).
 
 ### slice | limit
-The `slice` method returns a new DataSet using a slice of the data in the current DataSet (using zero-based array indexing)
+The `slice` method returns a new `DataSet` using a slice of the data in the current `DataSet` (using zero-based array indexing).
 
 Parameters:
-* `begin` - the array index indicating where the slice should begin
-* `end` - the array index indicating up to where the slice should extend (the item at this index is not actually included in the results)
+
+Name|Type|Description
+----|----|-----------
+`begin`|number|the array index indicating where the slice should begin
+`end`|number|the array index indicating up to where the slice should extend (the item at this index is not actually included in the results)
 
 Example:
 ```js
@@ -288,27 +330,33 @@ const new_dataset = dataset.limit(25);
 ## Input/Output methods
 
 ### fromFile
-The `fromFile` method returns a `Promise` to populate a new DataSet using data in a file.
+The asnynchronous `fromFile` method returns a `Promise` to populate the current `DataSet` using data from a file and returns the current `DataSet` when it's fulfilled.
 
 Parameters:
-* `filePath` (string) - the path to the file containing the data from which to construct the DataSet
-* `type` (string) - the type of file/format of the data ("json" or "csv")
+
+Name|Type|Description
+----|----|-----------
+`filePath`|string|the path to the file containing the data
+`type`|string|the type of file/format of the data ("json" or "csv")
 
 Example:
 ```js
 const dataset = await new ds.DataSet().fromFile("./data/test.json", "json");
 
-new ds.DataSet().fromFile("./data/test.json", "json").then ( ...do something with the DataSet returned... );
+new ds.DataSet().fromFile("./data/test.json", "json").then ( ...do something with the DataSet... );
 ```
 
-Note: the `name` of the new DataSet will be set to the name of the data file without its extension.
+Note: the `name` of the new `DataSet` will be set to the name of the data file without its extension.
 
 ### fromMySQL
-The `fromMySQL` method returns a `Promise` to populate a new DataSet using MySQL query results.
+The asynchronous `fromMySQL` method returns a `Promise` to populate the current `DataSet` using the results from a MySQL query and returns the current `DataSet` when it's fulfilled.
 
 Paramters:
-* `options` (object) - the options for the MySQL connection
-* `query` (string) - the query to retrieve the data for the DataSet
+
+Name|Type|Description
+----|----|-----------
+`options`|object|the options for the MySQL connection
+`query`|string|the query to retrieve the data
 
 Example:
 ```js
@@ -317,20 +365,23 @@ const dataset = await new ds.DataSet("test")
 
 new ds.DataSet("test")
   .fromMySQL({host: "localhost", user: "foo", password: "bar", database: "test"}, "select * from table")
-  .then( ...do something with the DataSet returned... );
+  .then( ...do something with the DataSet... );
 ```
 
-Note: Unless set earlier, as in the example above, the `name` of a new DataSet created using the `fromMySQL` method will be `null`. The `fields` of the new DataSet will be set to the fields returned by the query.
+Note: Unless set earlier, as in the example above, the `name` of a new `DataSet` created using the `fromMySQL` method will be `null`. The `fields` of the new DataSet will be set to the fields returned by the query.
 
 ### fromMongoDB
-The `fromMongoDB` method returns a `Promise` to populate a new DataSet using MongoDB query results.
+The `fromMongoDB` method returns a `Promise` to populate the current `DataSet` using the results from a MongoDB query and returns the current `DataSet` when it's fulfilled.
 
 Parameters:
-* `url` (string) - the url of the database
-* `database` (string) - the name of the database
-* `collection` (string) - the name of the collection
-* `query` (object) - the query to execute to retrieve results
-* `projection` (object) - the projection to execute on the results
+
+Name|Type|Description
+----|----|-----------
+`url`|string|the url of the database
+`database`|string|the name of the database
+`collection`|string|the name of the collection
+`query`|object|the query to execute to retrieve results
+`projection`|object|the projection to execute on the results
 
 Example:
 ```js
@@ -339,57 +390,65 @@ const dataset = await new ds.DataSet("test")
 
 new ds.DataSet("test")
   .fromMongoDB("mongodb://localhost:27017", "test", "test", {}, {"_id": 0})
-   .then( ...do something with the DataSet returned... );
+   .then( ...do something with the DataSet... );
 ```
 
-Note: Unless set earlier, as in the example above, the `name` of a new DataSet created using the `fromMongoDB` method will be `null`.
+Note: Unless set earlier, as in the example above, the `name` of a new `DataSet` created using the `fromMongoDB` method will be `null`.
 
 ### fromJSON
-The `fromJSON` method populates a new DataSet from an array of JSON objects.
+The `fromJSON` method populates the current `DataSet` from an array of JSON objects.
 
 Parameters:
-* `json` (object) - an array of JSON objects where the keys are the fields and the values are the data
+
+Name|Type|Description
+----|----|-----------
+`json`|array|an array of JSON objects where the keys are the fields and the values are the data
 
 Example:
 ```js
 const dataset = new ds.DataSet("test").fromJSON([{field1: 1, field2: "a"}, {field1: 2, field2: "b"}]);
 ```
 
-Note: Unless set earlier, as in the example above, the `name` of a new DataSet created using the `fromJSON` method will be `null`.
+Note: Unless set earlier, as in the example above, the `name` of a new `DataSet` created using the `fromJSON` method will be `null`.
 
 ### fromArray
-The `fromArray` method populates a new DataSet from an array.
+The `fromArray` method populates the current `DataSet` from an array.
 
 Parameters:
-* `array` (array) - an array containing the name, fields and data for the DataSet
+
+Name|Type|Description
+----|----|-----------
+`array`|array|an array containing the name, fields and data for the DataSet
 
 Example:
 ```js
 const dataset = new ds.DataSet().fromArray(["test", "field1, field2", [[1, "a"], [2, "b"]]);
 ```
 
-Note: this method is used exstensively internally to create new DataSets, but may not be of significant use in an application.
+Note: this method is used extensively internally when creating a new `DataSet`, but may not be of significant use in an application.
 
 ### toFile
-The `toFile` method writes the current DataSet to a file.
+The `toFile` method writes the current `DataSet` to a file.
 
 Parameters:
-* `filePath` (string) - the path to the output file
-* `type` (string) - the type of file/format of the data ("json" or "csv")
-* `options` (object) - options for the file
-  * for JSON `{pretty: (boolean), space: (integer)}` - the default is "unpretty" JSON
-  * for a CSV file `{delimiter: (string), quote: (string)}` - the default delimiter is `,` and the default quote is `\"`;
+
+Name|Type|Description
+----|----|-----------
+`filePath`|string|the path to the output file
+`type`|string|the type of file/format of the data ("json" or "csv")
+`options`|object|options for the file<br><br>for JSON `{pretty: (boolean), space: (integer)}`<br><br>for CSV `{delimiter: (string), quote: (string)}`
 
 Example:
 ```js
-dataset.toFile("./data/test.json", "json", {pretty: false});
 dataset.toFile("./data/test.json", "json", {pretty: true, space: 2});
 
 dataset.toFile("./data/test.csv", "json", {delimiter: "\t", quote: "'"});
 ```
+
+Note: The default option for JSON is `{pretty: false}` (i.e., unpretty)). The defaults for CSV is `{delimiter: ",", quote: "\""}`.
 ### toJSON
 
-The `toJSON` method converts the current DataSet to JSON format where the keys are the fields and the values are the data
+The `toJSON` method converts the current `DataSet` to an array of JSON objects where the `fields` are the keys and the `data` are the values.
 
 Example:
 ```js
