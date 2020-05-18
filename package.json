@@ -1,7 +1,7 @@
 {
   "name": "node-dataset",
-  "version": "1.0.2",
-  "description": "A node.js module for working with data sets",
+  "version": "1.0.5",
+  "description": "A node.js module for working with data sets created in code, loaded from files, or retrieved from a database.",
   "main": "index.js",
   "scripts": {},
   "repository": {

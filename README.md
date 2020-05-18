@@ -89,14 +89,14 @@ const some_other_states = fips
   .filter("state in ('Illinois','Kentucky','Colorado')")
  );
  ```
- 
+
 A DataSet can also be joined with other DataSets to create new a DataSet:
  ```js
  const fips_education_ = fips
   .join("education", "inner", "fips", "fips")
   .join("population", "inner", "fips", "fips.fips");
  ```
- 
+
 This example demonstrates another important thing: when DataSets are joined, the fields in the resulting DataSet are named by combining the name of the underlying DataSets and their fields ("fips.fips" in the example above). This ensures that there aren't any problems if the same field name is used in multiple DataSets.
 
 Aggregations can also be performed on a DataSet:
@@ -114,7 +114,7 @@ The DataSet constructor creates a new instace of a DataSet.
 
 Parameters:
 * `name` (string) - the name of the DataSet
-* `fields` (string|array) - a comma-separated list, or array, of fields in the DataSet (if a string is supplied, it will be split using `/\s*,\s*/`) 
+* `fields` (string|array) - a comma-separated list, or array, of fields in the DataSet (if a string is supplied, it will be split using `/\s*,\s*/`)
 * `data` (array) - the data in the DataSet
 
 Example:
@@ -239,7 +239,7 @@ For those who prefer SQL-style naming, the `where` method is a direct replacemen
 const new_dataset = dataset.where("field1 > 100 and field2 like '%something%' and field3 is not null");
 ```
 
-### sort | orderby 
+### sort | orderby
 The `sort` method returns a new DataSet with the data sorted.
 
 Parameters:
@@ -378,7 +378,7 @@ Parameters:
 * `type` (string) - the type of file/format of the data ("json" or "csv")
 * `options` (object) - options for the file
   * for JSON `{pretty: (boolean), space: (integer)}` - the default is "unpretty" JSON
-  * for a CSV file `{delimiter: (string), quote: (string)}` - the default delimiter is "," and the default quote is "\\"";
+  * for a CSV file `{delimiter: (string), quote: (string)}` - the default delimiter is `,` and the default quote is `\"`;
 
 Example:
 ```js
