@@ -48,7 +48,6 @@ var d = new ds.DataSet(
   ]
 );
 ```
-When creating a new DataSet you can choose to supply all three elements, some of them, or none of them.
 
 You can also create a DataSet from a file (CSV, JSON) or a database (MySQL, MongoDB):
 ```js
@@ -203,7 +202,7 @@ Parameters:
 
 Example:
 ```js
-const new_dataset = dataset.select("field1 as one, field2 as two, field3 as three");
+const new_dataset = dataset.select("field1, field2, field3 as three");
 ```
 
 ### join
@@ -221,7 +220,7 @@ const new_dataset = dataset.join(d2, "left", "d1_field1, d1_field2", "d2_field1,
 ```
 
 ### filter | where
-The `filter` method returns a new DataSet created by filter the current DataSet for a subset of data.
+The `filter` method returns a new DataSet created by filtering the current DataSet for a subset of data.
 
 Parameters:
 * `filterStatement` (string) - a statement describing the filter to be applied
@@ -229,11 +228,11 @@ Parameters:
 
 Example:
 ```js
-const new_dataset = dataset.filter("field1 > 100 and field2 like '%something%' and field3 is not null");
+const new_dataset = dataset.filter("field1 > 100 and field2 like '%something%' and field3 is not null", true);
 ```
-Supported comparison operators and functions include: `=`, `<`, `>`, `<=`, `>=`, `!=`, `<>`, `(not) in` (e.g. `in (1, 2, 3)` or `not in ('a', 'b, 'c')`), `(not) like` (e.g., `like 'cali%'` or `not like '%york'`), `(not) between` (e.g., `between 0 and 10` or `not between 1000 and 2000`), `is (not) null` (e.g., `field1 is null` or `field2 is not null`).
+Supported comparison operators and functions include: `=`, `<`, `>`, `<=`, `>=`, `!=`, `<>`, `(not) in` (e.g. `id in (1, 2, 3)` or `code not in ('a', 'b, 'c')`), `(not) like` (e.g., `state like 'cali%'` or `state not like '%york'`), `(not) between` (e.g., `id between 0 and 10` or `number not between 1000 and 2000`), `is (not) null` (e.g., `field1 is null` or `field2 is not null`).
 
-A note about `useEval`: All filter conditions, when matched against data, are ultimately reduced to a boolean statement; for example `(true || (false && true))`. At this point, if `useEval` is `true`, the boolean statment will be evaluated using the `new Function()` constructor, which is safer than using `eval` directly. However, if this is concerning, when `useEval` is set to `false` the "boolean-parser" module will be used to evaluate the statement. In testing, setting `useEval` to true regularly cuts execution time in half.
+A note about `useEval`: All filter conditions, when matched against data, are ultimately reduced to a boolean statement; for example `(true || (false && true))`. At this point, if `useEval` is `true`, the boolean statment will be evaluated using the `new Function()` constructor, which is actually safer than using `eval` directly. However, if this is concerning, when `useEval` is set to `false` the "boolean-parser" module will be used to evaluate the statement. In testing, setting `useEval` to true regularly cuts the execution time in half.
 
 For those who prefer SQL-style naming, the `where` method is a direct replacement for `filter`:
 ```js
@@ -250,7 +249,7 @@ Example:
 ```js
 const new_dataset = dataset.sort("field1 desc, field 2");
 ```
-If no sort order ("asc" or "desc") is supplied, the default is "asc".
+If no sort order---"asc" for ascending, "desc" for descending---is supplied, the default is "asc".
 
 For those who prefer SQL-style naming, the `orderby` method is a direct replacement for `sort`:
 ```js
@@ -268,14 +267,14 @@ Example:
 ```js
 const new_dataset = dataset.aggregate("field1, field2, min(field3), max(field4)", "field1, field2");
 ```
-Supported aggregate functions include: `count`, `min` (minimum), `max` (maximum), `sum`, `avg` (average), `var` (variance), `std` (standard deviation).
+Supported aggregate functions include: `count`, `min` (minimum), `max` (maximum), `sum`, `avg` (average), `var` (variance), and `std` (standard deviation).
 
 ### slice | limit
-The `slice` method returns a new DataSet from a slice of the data in the current DataSet (using zero-based array indexing)
+The `slice` method returns a new DataSet using a slice of the data in the current DataSet (using zero-based array indexing)
 
 Parameters:
 * `begin` - the array index indicating where the slice should begin
-* `end` - the array index indicating where the slice should end (not included in the results)
+* `end` - the array index indicating up to where the slice should extend (the item at this index is not actually included in the results)
 
 Example:
 ```js
@@ -299,7 +298,7 @@ Example:
 ```js
 const dataset = await new ds.DataSet().fromFile("./data/test.json", "json");
 
-new ds.DataSet().fromFile("./data/test.json", "json").then ( // do something with the DataSet returned );
+new ds.DataSet().fromFile("./data/test.json", "json").then ( ...do something with the DataSet returned... );
 ```
 
 Note: the `name` of the new DataSet will be set to the name of the data file without its extension.
@@ -313,9 +312,12 @@ Paramters:
 
 Example:
 ```js
-const dataset = await new ds.DataSet("test").fromMySQL({host: "localhost", user: "foo", password: "bar", database: "test"}, "select * from table")
+const dataset = await new ds.DataSet("test")
+  .fromMySQL({host: "localhost", user: "foo", password: "bar", database: "test"}, "select * from table")
 
-new ds.DataSet("test").fromMySQL({host: "localhost", user: "foo", password: "bar", database: "test"}, "select * from table").then( // do something with the DataSet returned );
+new ds.DataSet("test")
+  .fromMySQL({host: "localhost", user: "foo", password: "bar", database: "test"}, "select * from table")
+  .then( ...do something with the DataSet returned... );
 ```
 
 Note: Unless set earlier, as in the example above, the `name` of a new DataSet created using the `fromMySQL` method will be `null`. The `fields` of the new DataSet will be set to the fields returned by the query.
@@ -332,9 +334,12 @@ Parameters:
 
 Example:
 ```js
-const dataset = await new ds.DataSet("test").fromMongoDB("mongodb://localhost:27017", "test", "test", {}, {"_id": 0});
+const dataset = await new ds.DataSet("test")
+  .fromMongoDB("mongodb://localhost:27017", "test", "test", {}, {"_id": 0});
 
-new ds.DataSet("test").fromMongoDB("mongodb://localhost:27017", "test", "test", {}, {"_id": 0}).then( // do something with the DataSet returned );
+new ds.DataSet("test")
+  .fromMongoDB("mongodb://localhost:27017", "test", "test", {}, {"_id": 0})
+   .then( ...do something with the DataSet returned... );
 ```
 
 Note: Unless set earlier, as in the example above, the `name` of a new DataSet created using the `fromMongoDB` method will be `null`.
@@ -371,15 +376,20 @@ The `toFile` method writes the current DataSet to a file.
 Parameters:
 * `filePath` (string) - the path to the output file
 * `type` (string) - the type of file/format of the data ("json" or "csv")
-* `options` (object) - options for the file; for JSON `{pretty: (boolean), space: (integer)}` to make JSON pretty (e.g., `{pretty: true, space: 2}`), or for a CSV file `{delimiter: (string), quote: (string)}` (e.g., `{delimiter: "\t", quote: "'"}`).
+* `options` (object) - options for the file
+** for JSON `{pretty: (boolean), space: (integer)}` - the default is "unpretty" JSON
+** for a CSV file `{delimiter: (string), quote: (string)}` - the default delimiter is "," and the default quote is "\"";
 
 Example:
 ```js
 dataset.toFile("./data/test.json", "json", {pretty: false});
+dataset.toFile("./data/test.json", "json", {pretty: true, space: 2});
+
+dataset.toFile("./data/test.csv", "json", {delimiter: "\t", quote: "'"});
 ```
 ### toJSON
 
-The `toJSON` method converts the current DataSet to JSON format
+The `toJSON` method converts the current DataSet to JSON format where the keys are the fields and the values are the data
 
 Example:
 ```js
