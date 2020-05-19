@@ -1,9 +1,15 @@
 {
   "name": "node-dataset",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "A Node.js module for working with data sets created in code, loaded from files, or retrieved from a database.",
   "main": "index.js",
-  "scripts": {},
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "test/test.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/jamesbontempo/node-dataset.git"
@@ -18,10 +24,14 @@
     "MySQL",
     "MongoDB"
   ],
-  "author": "James BonTempo",
+  "author": {
+    "name": "James BonTempo",
+    "email": "jamesbontempo@gmail.com"
+  },
   "license": "MIT",
   "dependencies": {
     "boolean-parser": "0.0.2",
+    "chai": "^4.2.0",
     "mongodb": "^3.5.7",
     "mysql": "^2.18.1"
   }
