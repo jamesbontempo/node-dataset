@@ -29,7 +29,7 @@
   - [toFile](#tofile)
   - [toJSON](#tojson)
 - [SQL examples](#sql-examples)
-- [A note about (multiple) joins](#A-note-about--multiple--joins)
+- [A note about (multiple) joins](#A-note-about-multiple-joins)
 
 ## Introduction
 Logically, a `DataSet` is analogous to a table in a database or a data file (e.g., a CSV file). A `DataSet` has a name, a set of fields, and data. You can create a new `DataSet` by supplying these three elements:
