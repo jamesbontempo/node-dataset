@@ -28,6 +28,8 @@
   - [fromArray](#fromarray)
   - [toFile](#tofile)
   - [toJSON](#tojson)
+- [SQL examples](#sql-examples)
+- [A note about (multiple) joins](#A-note-about--multiple--joins)
 
 ## Introduction
 Logically, a `DataSet` is analogous to a table in a database or a data file (e.g., a CSV file). A `DataSet` has a name, a set of fields, and data. You can create a new `DataSet` by supplying these three elements:
@@ -469,3 +471,63 @@ Example:
 ```js
 const json = dataset.toJSON();
 ```
+
+## SQL examples
+For those used to working with SQL, it might be helpful to see some examples of how to map SQL queries to a series of `DataSet` calls.
+
+Let's suppose you had this query:
+```sql
+select employee.id, employee.name, employee.department_id, department.id, department.name as department_name
+from employee
+    inner join department on department.id = employee.department_id
+```
+
+Assuming you have a `DataSet` named "employee" and another named "department," you could do this:
+
+```js
+const joined_dataset = employee
+    .join(department, "inner", "department_id", "id")
+    .select("employee.id, employee.name, employee.department_id, department.id, department.name as department_name");
+```
+
+You'll notice that I've placed the `select` call after the `join`. I have to do this because the "employee" `DataSet` has to be joined to the "department" `DataSet` before I can select fields from across both of them. This will likely become a pattern as you use `node-dataset`&mdash;the last thing you specify is a `select`, whereas in SQL it's the first thing.
+
+Similarly, `aggregate` will often be a final operation. Let's look at another SQL example, this time one using "group by," and see how it would be achieved with `node-dataset`.
+
+```sql
+select department.department_name, count(employee.id), avg(employee.age)
+from department
+    inner join employee on employee.department_id = department.id
+group by department.department_name
+```
+
+```js
+const aggregate_dataset = department
+    .join(employee, "inner", "id", "department_id")
+    .aggregate("department.department_name, count(employee.id), avg(employee.age)");
+```
+
+## A note about (multiple) joins
+
+As noted earlier, the names of the `fields` in a `DataSet` returned by a `join` always include their base `DataSet` `name` to ensure uniqueness, in case the joined `DataSet` objects have `fields` with the same name. However, the resulting `DataSet` from the join has its own name set to `null`. The simple explanation for this is that it's not clear what to name the new `DataSet` given that it is created from two distinct objects. The upside to setting the name to `null` is that `fields` will not be renamed, over and over, when multiple joins are "chained" together.
+
+Imagine we have three `DataSet` objects, each with the `fields` "id" and "name". We could join all of them like this:
+
+```js
+const triple_join = a
+    .join(b, "inner", "id", "id")
+    .join(c, "inner", "a.id", "id");
+```
+
+I have to specify "a.id" in the second `join` because the first `join` will rename the field in the `DataSet` passed to the second `join`. But in the end, the `triple_join` `DataSet` would have the `fields` "a.id", "a.name", "b.id", "b.name", "c.id", and "c.name." In particular, it's important to point out that the additional join with `c` would not prepend the `a` and `b` `fields` with anything because the `DataSet` from the first `join` that is passed to the second `join` has its name set to `null`. The end result of all of this is that successive joins in a chain will not do anything too funny with any `fields` other then prepend them with their respective `DataSet` `name` along the way.
+
+Of course, that wouldn't keep me from doing something like this:
+
+```js
+const triple_join = a
+    .join(b, "inner", "id", "id")
+    .select(a.id as id, a.name, b.id, b.name)
+    .join(c, "inner", "id", "id");
+```
+
+By putting the `select` in between the first and second `join` and using the `as` keyword, I've renamed "a.id" as simply "id" so that I can refer to it as such in the next `join`. I'm not sure that makes anything easier to understand, but when performing a long `join` chain, renaming `fields` along the way, and maybe even using `select` to "whittle down" the `DataSet`, might make sense.
