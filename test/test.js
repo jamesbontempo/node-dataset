@@ -1,6 +1,6 @@
 const expect = require("chai").expect;
 const ds = require("../index.js");
-const fs = require("fs");
+const path = require("path");
 
 describe("Constructor", function() {
 
@@ -77,7 +77,7 @@ describe("Get/Set methods and count", function() {
             d.setName("test")
             expect(d.name).to.equal("test");
         });
-        
+
     });
 
     describe("fields", function() {
@@ -847,14 +847,14 @@ describe("Input/Output functions", function() {
         describe("file", function() {
 
             it("CSV", async function() {
-                const d = await new ds.DataSet().fromFile("test.csv", "csv");
+                const d = await new ds.DataSet().fromFile(path.join(__dirname, "/test.csv"), "csv");
                 expect(d.name).to.equal("test");
                 expect(d.fields).to.eql(["id", "code", "name"]);
                 expect(d.data).to.eql([[1, "a", "Product A"], [2, "b", "Product B"], [3, "c", "Product C"]]);
             });
 
             it("JSON", async function() {
-                const d = await new ds.DataSet().fromFile("test.json", "json");
+                const d = await new ds.DataSet().fromFile(path.join(__dirname, "test.json"), "json");
                 expect(d.name).to.equal("test");
                 expect(d.fields).to.eql(["id", "code", "name"]);
                 expect(d.data).to.eql([[1, "a", "Product A"], [2, "b", "Product B"]]);
@@ -893,8 +893,8 @@ describe("Input/Output functions", function() {
 
             it("CSV", async function () {
                 const d = new ds.DataSet("test", "id, code, name", [[1, "a", "Product A"], [2, "b", "Product B"], [3, "c", "Product C"]]);
-                await d.toFile("out.csv", "csv");
-                const e = await new ds.DataSet().fromFile("out.csv", "csv");
+                await d.toFile(path.join(__dirname, "out.csv"), "csv");
+                const e = await new ds.DataSet().fromFile(path.join(__dirname, "out.csv"), "csv");
                 expect(e.name).to.equal("out");
                 expect(e.fields).to.eql(["id", "code", "name"]);
                 expect(e.data).to.eql([[1, "a", "Product A"], [2, "b", "Product B"], [3, "c", "Product C"]]);
@@ -903,8 +903,8 @@ describe("Input/Output functions", function() {
 
             it("JSON", async function () {
                 const d = new ds.DataSet("test", "id, code, name", [[1, "a", "Product A"], [2, "b", "Product B"]]);
-                await d.toFile("out.json", "json");
-                const e = await new ds.DataSet().fromFile("out.json", "json");
+                await d.toFile(path.join(__dirname, "out.json"), "json");
+                const e = await new ds.DataSet().fromFile(path.join(__dirname, "out.json"), "json");
                 expect(e.name).to.equal("out");
                 expect(e.fields).to.eql(["id", "code", "name"]);
                 expect(e.data).to.eql([[1, "a", "Product A"], [2, "b", "Product B"]]);
