@@ -504,7 +504,7 @@ group by department.department_name
 ```js
 const aggregate_dataset = department
     .join(employee, "inner", "id", "department_id")
-    .aggregate("department.department_name, count(employee.id), avg(employee.age)");
+    .aggregate("department.department_name, count(employee.id), avg(employee.age)", "department.department_name");
 ```
 
 ## A note about (multiple) joins
