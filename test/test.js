@@ -105,8 +105,8 @@ describe("Get/Set methods and count", function() {
         });
 
         it("set", function() {
-            d.setData([[3, "c", "Product C"], [4, "d", "Product D"]]);
-            expect(d.data).to.eql([[3, "c", "Product C"], [4, "d", "Product D"]]);
+            d.setData([[3, "c", "Product C"], [4, "d", null]]);
+            expect(d.data).to.eql([[3, "c", "Product C"], [4, "d", null]]);
         });
 
     });
@@ -123,10 +123,10 @@ describe("Data manipulation methods", function() {
         "a",
         "id, code, name, date",
         [
-            [1, "a", "Product A", "2019-12-01"],
+            [1, "a", "Product A", null],
             [2, "b", "Product B", "2020-01-01"],
             [3, "c", "Product C", "2020-04-01"],
-            [4, "d", "Product D", "2020-03-01"]
+            [4, "d", null, "2020-03-01"]
         ]
     );
 
@@ -164,7 +164,7 @@ describe("Data manipulation methods", function() {
             expect(d.fields).to.eql(["a.id", "a.code", "a.name", "a.date", "b.id", "b.code", "b.name", "b.date", "c.id", "c.code", "c.name", "c.date"]);
             expect(d.data).to.eql(
                 [
-                    [1, "a", "Product A", "2019-12-01", 1, "e", "Product E", "2019-11-01", 1, "h", "Product H", "2019-10-01"],
+                    [1, "a", "Product A", null, 1, "e", "Product E", "2019-11-01", 1, "h", "Product H", "2019-10-01"],
                     [2, "b", "Product B", "2020-01-01", 2, "f", "Product F", "2020-02-01", 2, "x", null, "2019-09-01"]
                 ]
             );
@@ -176,10 +176,10 @@ describe("Data manipulation methods", function() {
             expect(d.fields).to.eql(["a.id", "a.code", "a.name", "a.date", "b.id", "b.code", "b.name", "b.date"]);
             expect(d.data).to.eql(
                 [
-                    [1, "a", "Product A", "2019-12-01", 1, "e", "Product E", "2019-11-01"],
+                    [1, "a", "Product A", null, 1, "e", "Product E", "2019-11-01"],
                     [2, "b", "Product B", "2020-01-01", 2, "f", "Product F", "2020-02-01"],
                     [3, "c", "Product C", "2020-04-01", 3, "g", "Product G", "2020-05-01"],
-                    [4, "d", "Product D", "2020-03-01", null, null, null, null]
+                    [4, "d", null, "2020-03-01", null, null, null, null]
                 ]
             );
         });
@@ -190,10 +190,10 @@ describe("Data manipulation methods", function() {
             expect(d.fields).to.eql(["a.id", "a.code", "a.name", "a.date", "b.id", "b.code", "b.name", "b.date"]);
             expect(d.data).to.eql(
                 [
-                    [1, "a", "Product A", "2019-12-01", 1, "e", "Product E", "2019-11-01"],
+                    [1, "a", "Product A", null, 1, "e", "Product E", "2019-11-01"],
                     [2, "b", "Product B", "2020-01-01", 2, "f", "Product F", "2020-02-01"],
                     [3, "c", "Product C", "2020-04-01", 3, "g", "Product G", "2020-05-01"],
-                    [4, "d", "Product D", "2020-03-01", null, null, null, null]
+                    [4, "d", null, "2020-03-01", null, null, null, null]
                 ]
             );
         });
@@ -204,18 +204,18 @@ describe("Data manipulation methods", function() {
             expect(d.fields).to.eql(["a.id", "a.code", "a.name", "a.date", "b.id", "b.code", "b.name", "b.date"]);
             expect(d.data).to.eql(
                 [
-                    [1, "a", "Product A", "2019-12-01", 1, "e", "Product E", "2019-11-01"],
-                    [1, "a", "Product A", "2019-12-01", 2, "f", "Product F", "2020-02-01"],
-                    [1, "a", "Product A", "2019-12-01", 3, "g", "Product G", "2020-05-01"],
+                    [1, "a", "Product A", null, 1, "e", "Product E", "2019-11-01"],
+                    [1, "a", "Product A", null, 2, "f", "Product F", "2020-02-01"],
+                    [1, "a", "Product A", null, 3, "g", "Product G", "2020-05-01"],
                     [2, "b", "Product B", "2020-01-01", 1, "e", "Product E", "2019-11-01"],
                     [2, "b", "Product B", "2020-01-01", 2, "f", "Product F", "2020-02-01"],
                     [2, "b", "Product B", "2020-01-01", 3, "g", "Product G", "2020-05-01"],
                     [3, "c", "Product C", "2020-04-01", 1, "e", "Product E", "2019-11-01"],
                     [3, "c", "Product C", "2020-04-01", 2, "f", "Product F", "2020-02-01"],
                     [3, "c", "Product C", "2020-04-01", 3, "g", "Product G", "2020-05-01"],
-                    [4, "d", "Product D", "2020-03-01", 1, "e", "Product E", "2019-11-01"],
-                    [4, "d", "Product D", "2020-03-01", 2, "f", "Product F", "2020-02-01"],
-                    [4, "d", "Product D", "2020-03-01", 3, "g", "Product G", "2020-05-01"]
+                    [4, "d", null, "2020-03-01", 1, "e", "Product E", "2019-11-01"],
+                    [4, "d", null, "2020-03-01", 2, "f", "Product F", "2020-02-01"],
+                    [4, "d", null, "2020-03-01", 3, "g", "Product G", "2020-05-01"]
                 ]
             );
         });
@@ -230,14 +230,14 @@ describe("Data manipulation methods", function() {
                 const d = a.filter("id = 1");
                 expect(d.name).to.equal("a");
                 expect(d.fields).to.eql(["id", "code", "name", "date"]);
-                expect(d.data).to.eql([[1, "a", "Product A", "2019-12-01"]])
+                expect(d.data).to.eql([[1, "a", "Product A", null]])
             });
 
             it("string", function() {
                 const d = a.filter("code = 'a'");
                 expect(d.name).to.equal("a");
                 expect(d.fields).to.eql(["id", "code", "name", "date"]);
-                expect(d.data).to.eql([[1, "a", "Product A", "2019-12-01"]])
+                expect(d.data).to.eql([[1, "a", "Product A", null]])
             });
 
             it("date", function() {
@@ -259,7 +259,7 @@ describe("Data manipulation methods", function() {
                     [
                         [2, "b", "Product B", "2020-01-01"],
                         [3, "c", "Product C", "2020-04-01"],
-                        [4, "d", "Product D", "2020-03-01"]
+                        [4, "d", null, "2020-03-01"]
                     ]
                 );
             });
@@ -271,7 +271,7 @@ describe("Data manipulation methods", function() {
                 expect(d.data).to.eql(
                     [
                         [3, "c", "Product C", "2020-04-01"],
-                        [4, "d", "Product D", "2020-03-01"]
+                        [4, "d", null, "2020-03-01"]
                     ]
                 );
             });
@@ -283,14 +283,14 @@ describe("Data manipulation methods", function() {
                 const d = a.filter("id < 2");
                 expect(d.name).to.equal("a");
                 expect(d.fields).to.eql(["id", "code", "name", "date"]);
-                expect(d.data).to.eql([[1, "a", "Product A", "2019-12-01"]])
+                expect(d.data).to.eql([[1, "a", "Product A", null]])
             });
 
             it("date", function() {
                 const d = a.filter("date < '2020-01-01'");
                 expect(d.name).to.equal("a");
                 expect(d.fields).to.eql(["id", "code", "name", "date"]);
-                expect(d.data).to.eql([[1, "a", "Product A", "2019-12-01"]]);
+                expect(d.data).to.eql([]);
             });
 
         });
@@ -305,7 +305,7 @@ describe("Data manipulation methods", function() {
                     [
                         [2, "b", "Product B", "2020-01-01"],
                         [3, "c", "Product C", "2020-04-01"],
-                        [4, "d", "Product D", "2020-03-01"]
+                        [4, "d", null, "2020-03-01"]
                     ]
                 );
             });
@@ -318,7 +318,7 @@ describe("Data manipulation methods", function() {
                     [
                         [2, "b", "Product B", "2020-01-01"],
                         [3, "c", "Product C", "2020-04-01"],
-                        [4, "d", "Product D", "2020-03-01"]
+                        [4, "d", null, "2020-03-01"]
                     ]
                 );
             });
@@ -333,7 +333,7 @@ describe("Data manipulation methods", function() {
                 expect(d.fields).to.eql(["id", "code", "name", "date"]);
                 expect(d.data).to.eql(
                     [
-                        [1, "a", "Product A", "2019-12-01"],
+                        [1, "a", "Product A", null],
                         [2, "b", "Product B", "2020-01-01"]
                     ]
                 );
@@ -345,7 +345,6 @@ describe("Data manipulation methods", function() {
                 expect(d.fields).to.eql(["id", "code", "name", "date"]);
                 expect(d.data).to.eql(
                     [
-                        [1, "a", "Product A", "2019-12-01"],
                         [2, "b", "Product B", "2020-01-01"]
                     ]
                 );
@@ -361,9 +360,9 @@ describe("Data manipulation methods", function() {
                 expect(d.fields).to.eql(["id", "code", "name", "date"]);
                 expect(d.data).to.eql(
                     [
-                        [1, "a", "Product A", "2019-12-01"],
+                        [1, "a", "Product A", null],
                         [3, "c", "Product C", "2020-04-01"],
-                        [4, "d", "Product D", "2020-03-01"]
+                        [4, "d", null, "2020-03-01"]
                     ]
                 );
             });
@@ -374,9 +373,9 @@ describe("Data manipulation methods", function() {
                 expect(d.fields).to.eql(["id", "code", "name", "date"]);
                 expect(d.data).to.eql(
                     [
-                        [1, "a", "Product A", "2019-12-01"],
+                        [1, "a", "Product A", null],
                         [3, "c", "Product C", "2020-04-01"],
-                        [4, "d", "Product D", "2020-03-01"]
+                        [4, "d", null, "2020-03-01"]
                     ]
                 );
             });
@@ -387,9 +386,9 @@ describe("Data manipulation methods", function() {
                 expect(d.fields).to.eql(["id", "code", "name", "date"]);
                 expect(d.data).to.eql(
                     [
-                        [1, "a", "Product A", "2019-12-01"],
+                        [1, "a", "Product A", null],
                         [3, "c", "Product C", "2020-04-01"],
-                        [4, "d", "Product D", "2020-03-01"]
+                        [4, "d", null, "2020-03-01"]
                     ]
                 );
             });
@@ -404,9 +403,9 @@ describe("Data manipulation methods", function() {
                 expect(d.fields).to.eql(["id", "code", "name", "date"]);
                 expect(d.data).to.eql(
                     [
-                        [1, "a", "Product A", "2019-12-01"],
+                        [1, "a", "Product A", null],
                         [3, "c", "Product C", "2020-04-01"],
-                        [4, "d", "Product D", "2020-03-01"]
+                        [4, "d", null, "2020-03-01"]
                     ]
                 );
             });
@@ -417,9 +416,9 @@ describe("Data manipulation methods", function() {
                 expect(d.fields).to.eql(["id", "code", "name", "date"]);
                 expect(d.data).to.eql(
                     [
-                        [1, "a", "Product A", "2019-12-01"],
+                        [1, "a", "Product A", null],
                         [3, "c", "Product C", "2020-04-01"],
-                        [4, "d", "Product D", "2020-03-01"]
+                        [4, "d", null, "2020-03-01"]
                     ]
                 );
             });
@@ -430,9 +429,9 @@ describe("Data manipulation methods", function() {
                 expect(d.fields).to.eql(["id", "code", "name", "date"]);
                 expect(d.data).to.eql(
                     [
-                        [1, "a", "Product A", "2019-12-01"],
+                        [1, "a", "Product A", null],
                         [3, "c", "Product C", "2020-04-01"],
-                        [4, "d", "Product D", "2020-03-01"]
+                        [4, "d", null, "2020-03-01"]
                     ]
                 );
             });
@@ -447,7 +446,7 @@ describe("Data manipulation methods", function() {
                 expect(d.fields).to.eql(["id", "code", "name", "date"]);
                 expect(d.data).to.eql(
                     [
-                        [1, "a", "Product A", "2019-12-01"],
+                        [1, "a", "Product A", null],
                         [3, "c", "Product C", "2020-04-01"]
                     ]
                 );
@@ -459,7 +458,7 @@ describe("Data manipulation methods", function() {
                 expect(d.fields).to.eql(["id", "code", "name", "date"]);
                 expect(d.data).to.eql(
                     [
-                        [1, "a", "Product A", "2019-12-01"],
+                        [1, "a", "Product A", null],
                         [3, "c", "Product C", "2020-04-01"]
                     ]
                 );
@@ -471,7 +470,6 @@ describe("Data manipulation methods", function() {
                 expect(d.fields).to.eql(["id", "code", "name", "date"]);
                 expect(d.data).to.eql(
                     [
-                        [1, "a", "Product A", "2019-12-01"],
                         [3, "c", "Product C", "2020-04-01"]
                     ]
                 );
@@ -488,7 +486,7 @@ describe("Data manipulation methods", function() {
                 expect(d.data).to.eql(
                     [
                         [2, "b", "Product B", "2020-01-01"],
-                        [4, "d", "Product D", "2020-03-01"]
+                        [4, "d", null, "2020-03-01"]
                     ]
                 );
             });
@@ -500,7 +498,7 @@ describe("Data manipulation methods", function() {
                 expect(d.data).to.eql(
                     [
                         [2, "b", "Product B", "2020-01-01"],
-                        [4, "d", "Product D", "2020-03-01"]
+                        [4, "d", null, "2020-03-01"]
                     ]
                 );
             });
@@ -512,7 +510,7 @@ describe("Data manipulation methods", function() {
                 expect(d.data).to.eql(
                     [
                         [2, "b", "Product B", "2020-01-01"],
-                        [4, "d", "Product D", "2020-03-01"]
+                        [4, "d", null, "2020-03-01"]
                     ]
                 );
             });
@@ -544,7 +542,7 @@ describe("Data manipulation methods", function() {
                     [
                         [2, "b", "Product B", "2020-01-01"],
                         [3, "c", "Product C", "2020-04-01"],
-                        [4, "d", "Product D", "2020-03-01"]
+                        [4, "d", null, "2020-03-01"]
                     ]
                 );
             });
@@ -561,7 +559,7 @@ describe("Data manipulation methods", function() {
                     [
                         [2, "b", "Product B", "2020-01-01"],
                         [3, "c", "Product C", "2020-04-01"],
-                        [4, "d", "Product D", "2020-03-01"]
+                        [4, "d", null, "2020-03-01"]
                     ]
                 );
             });
@@ -573,7 +571,7 @@ describe("Data manipulation methods", function() {
                 expect(d.data).to.eql(
                     [
                         [2, "b", "Product B", "2020-01-01"],
-                        [4, "d", "Product D", "2020-03-01"]
+                        [4, "d", null, "2020-03-01"]
                     ]
                 );
             });
@@ -588,8 +586,8 @@ describe("Data manipulation methods", function() {
                 expect(d.fields).to.eql(["id", "code", "name", "date"]);
                 expect(d.data).to.eql(
                     [
-                        [1, "a", "Product A", "2019-12-01"],
-                        [4, "d", "Product D", "2020-03-01"]
+                        [1, "a", "Product A", null],
+                        [4, "d", null, "2020-03-01"]
                     ]
                 );
             });
@@ -600,7 +598,6 @@ describe("Data manipulation methods", function() {
                 expect(d.fields).to.eql(["id", "code", "name", "date"]);
                 expect(d.data).to.eql(
                     [
-                        [1, "a", "Product A", "2019-12-01"],
                         [3, "c", "Product C", "2020-04-01"]
                     ]
                 );
@@ -667,7 +664,7 @@ describe("Data manipulation methods", function() {
             const d = a.where("id = 1");
             expect(d.name).to.equal("a");
             expect(d.fields).to.eql(["id", "code", "name", "date"]);
-            expect(d.data).to.eql([[1, "a", "Product A", "2019-12-01"]])
+            expect(d.data).to.eql([[1, "a", "Product A", null]])
         });
 
     });
@@ -680,24 +677,25 @@ describe("Data manipulation methods", function() {
             expect(d.fields).to.eql(["id", "code", "name", "date"]);
             expect(d.data).to.eql(
                 [
-                    [1, "a", "Product A", "2019-12-01"],
+                    [1, "a", "Product A", null],
                     [2, "b", "Product B", "2020-01-01"],
-                    [4, "d", "Product D", "2020-03-01"],
+                    [4, "d", null, "2020-03-01"],
                     [3, "c", "Product C", "2020-04-01"]
                 ]
             );
         });
 
         it("desc", function() {
-            const d = a.sort("id desc");
+            const d = a.sort("name desc");
             expect(d.name).to.equal("a");
             expect(d.fields).to.eql(["id", "code", "name", "date"]);
             expect(d.data).to.eql(
                 [
-                    [4, "d", "Product D", "2020-03-01"],
                     [3, "c", "Product C", "2020-04-01"],
                     [2, "b", "Product B", "2020-01-01"],
-                    [1, "a", "Product A", "2019-12-01"]
+                    [1, "a", "Product A", null],
+                    [4, "d", null, "2020-03-01"],
+
                 ]
             );
         });
@@ -708,17 +706,17 @@ describe("Data manipulation methods", function() {
             expect(d.fields).to.eql(["a.id", "a.code", "a.name", "a.date", "b.id", "b.code", "b.name", "b.date"]);
             expect(d.data).to.eql(
                 [
-                    [1, "a", "Product A", "2019-12-01", 3, "g", "Product G", "2020-05-01"],
+                    [1, "a", "Product A", null, 3, "g", "Product G", "2020-05-01"],
                     [2, "b", "Product B", "2020-01-01", 3, "g", "Product G", "2020-05-01"],
-                    [4, "d", "Product D", "2020-03-01", 3, "g", "Product G", "2020-05-01"],
+                    [4, "d", null, "2020-03-01", 3, "g", "Product G", "2020-05-01"],
                     [3, "c", "Product C", "2020-04-01", 3, "g", "Product G", "2020-05-01"],
-                    [1, "a", "Product A", "2019-12-01", 2, "f", "Product F", "2020-02-01"],
+                    [1, "a", "Product A", null, 2, "f", "Product F", "2020-02-01"],
                     [2, "b", "Product B", "2020-01-01", 2, "f", "Product F", "2020-02-01"],
-                    [4, "d", "Product D", "2020-03-01", 2, "f", "Product F", "2020-02-01"],
+                    [4, "d", null, "2020-03-01", 2, "f", "Product F", "2020-02-01"],
                     [3, "c", "Product C", "2020-04-01", 2, "f", "Product F", "2020-02-01"],
-                    [1, "a", "Product A", "2019-12-01", 1, "e", "Product E", "2019-11-01"],
+                    [1, "a", "Product A", null, 1, "e", "Product E", "2019-11-01"],
                     [2, "b", "Product B", "2020-01-01", 1, "e", "Product E", "2019-11-01"],
-                    [4, "d", "Product D", "2020-03-01", 1, "e", "Product E", "2019-11-01"],
+                    [4, "d", null, "2020-03-01", 1, "e", "Product E", "2019-11-01"],
                     [3, "c", "Product C", "2020-04-01", 1, "e", "Product E", "2019-11-01"]
                 ]
             );
@@ -730,9 +728,9 @@ describe("Data manipulation methods", function() {
             expect(d.fields).to.eql(["id", "code", "name", "date"]);
             expect(d.data).to.eql(
                 [
-                    [1, "a", "Product A", "2019-12-01"],
+                    [1, "a", "Product A", null],
                     [2, "b", "Product B", "2020-01-01"],
-                    [4, "d", "Product D", "2020-03-01"],
+                    [4, "d", null, "2020-03-01"],
                     [3, "c", "Product C", "2020-04-01"]
                 ]
             );
@@ -816,7 +814,7 @@ describe("Data manipulation methods", function() {
             expect(d.fields).to.eql(["id", "code", "name", "date"]);
             expect(d.data).to.eql(
                 [
-                    [1, "a", "Product A", "2019-12-01"],
+                    [1, "a", "Product A", null],
                     [2, "b", "Product B", "2020-01-01"]
                 ]
             );
