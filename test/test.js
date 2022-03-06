@@ -850,7 +850,7 @@ describe("Input/Output functions", function() {
                 const d = await new ds.DataSet().fromFile(path.join(__dirname, "/test.csv"), "csv");
                 expect(d.name).to.equal("test");
                 expect(d.fields).to.eql(["id", "code", "name"]);
-                expect(d.data).to.eql([[1, "a", "Product A"], [2, "b", "Product B"], [3, "c", "Product C"]]);
+                expect(d.data).to.eql([[null, "a", "Product A"], [2, "b", "Product B"], [3, "c", "Product C"]]);
             });
 
             it("JSON", async function() {
