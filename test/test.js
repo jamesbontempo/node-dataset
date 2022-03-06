@@ -283,14 +283,14 @@ describe("Data manipulation methods", function() {
                 const d = a.filter("id < 2");
                 expect(d.name).to.equal("a");
                 expect(d.fields).to.eql(["id", "code", "name", "date"]);
-                expect(d.data).to.eql([[1, "a", "Product A", null]])
+                expect(d.data).to.eql([[1, "a", "Product A", null]]);
             });
 
             it("date", function() {
                 const d = a.filter("date < '2020-01-01'");
                 expect(d.name).to.equal("a");
                 expect(d.fields).to.eql(["id", "code", "name", "date"]);
-                expect(d.data).to.eql([]);
+                expect(d.data).to.eql([[1, "a", "Product A", null]]);
             });
 
         });
@@ -345,6 +345,7 @@ describe("Data manipulation methods", function() {
                 expect(d.fields).to.eql(["id", "code", "name", "date"]);
                 expect(d.data).to.eql(
                     [
+                        [1, "a", "Product A", null],
                         [2, "b", "Product B", "2020-01-01"]
                     ]
                 );
