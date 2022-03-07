@@ -744,9 +744,9 @@ describe("Data manipulation methods", function() {
         const a = new ds.DataSet("aggregate", "id, number", [[1, 1], [1, 2], [1, 3], [2,2], [2, 4], [2, 6], [2, 8]]);
 
         it("count", function() {
-            const b = a.aggregate("id, count(id)", "id");
+            const b = a.aggregate("id, count(id) as count", "id");
             expect(b.name).to.equal("aggregate");
-            expect(b.fields).to.eql(["id", "count(id)"]);
+            expect(b.fields).to.eql(["id", "count"]);
             expect(b.data).to.eql([[1, 3], [2, 4]]);
         })
 
@@ -765,9 +765,9 @@ describe("Data manipulation methods", function() {
         })
 
         it("avg", function() {
-            const b = a.aggregate("id, avg(number)", "id");
+            const b = a.aggregate("id, avg(number) as Average", "id");
             expect(b.name).to.equal("aggregate");
-            expect(b.fields).to.eql(["id", "avg(number)"]);
+            expect(b.fields).to.eql(["id", "Average"]);
             expect(b.data).to.eql([[1, 2], [2, 5]]);
         })
 

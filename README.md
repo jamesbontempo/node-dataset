@@ -237,7 +237,7 @@ Parameters:
 
 Name|Type|Description
 ----|----|-----------
-`fieldList`|string|a comma-separated list of fields to select, which can be renamed using the "as" keyword.
+`fieldList`|string|a comma-separated list of fields to select, which can be renamed using the "as" keyword
 
 Example:
 ```js
@@ -317,12 +317,12 @@ Parameters:
 
 Name|Type|Description
 ----|----|-----------
-`aggregationList`|string|a comma-separated list of aggregate functions to perform on fields
+`aggregationList`|string|a comma-separated list of aggregate functions to perform on fields, which can be aliased using the "as" keyword
 `groupList`|string|a comma-separated list of fields to group by
 
 Example:
 ```js
-const new_dataset = dataset.aggregate("field1, field2, min(field3), max(field4)", "field1, field2");
+const new_dataset = dataset.aggregate("field1, field2, min(field3) as min, max(field4)", "field1, field2");
 ```
 Supported aggregate functions include: `count`, `min` (minimum), `max` (maximum), `sum`, `avg` (average), `var` (variance), and `std` (standard deviation).
 
