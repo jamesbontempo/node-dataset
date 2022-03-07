@@ -28,6 +28,7 @@
   - [fromArray](#fromarray)
   - [toFile](#tofile)
   - [toJSON](#tojson)
+  - [toCSV](#tocsv)
 - [SQL examples](#sql-examples)
 - [A note about (multiple) joins](#a-note-about-multiple-joins)
 
@@ -470,6 +471,15 @@ The `toJSON` method converts the current `DataSet` to an array of JSON objects w
 Example:
 ```js
 const json = dataset.toJSON();
+```
+
+### toCSV
+
+The `toCSV` method converts the current `DataSet` to a CSV-style, multi-line string where the first line contains the `fields` and the remaining lines comprise the `data`.
+
+Example:
+```js
+const csv = dataset.toCSV();
 ```
 
 ## SQL examples

@@ -888,6 +888,11 @@ describe("Input/Output functions", function() {
             expect(d.toJSON()).to.eql([{id: 1, code: "a", name: "Product A"}, {id: 2, code: "b", name: "Product B"}]);
         });
 
+        it("CSV", function () {
+            const d = new ds.DataSet().fromArray(["test", ["id", "code", "name"], [[1, "a", "Product A"], [2, "b", "Product B"]]]);
+            expect(d.toCSV()).to.eql("id,code,name\n1,\"a\",\"Product A\"\n2,\"b\",\"Product B\"");
+        });
+
         describe("file", function() {
 
             it("CSV", async function () {
