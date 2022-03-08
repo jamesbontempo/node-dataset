@@ -843,6 +843,13 @@ describe("Input/Output functions", function() {
             expect(d.data).to.eql([[1, "a", "Product A"], [2, "b", "Product B"]]);
         });
 
+        it("fromCSV", function () {
+            const d = new ds.DataSet().fromCSV("id,code,name\n1,\"a\",\"Product A\"\n2,\"b\",\"Product B\"");
+            expect(d.name).to.equal(null);
+            expect(d.fields).to.eql(["id", "code", "name"]);
+            expect(d.data).to.eql([[1, "a", "Product A"], [2, "b", "Product B"]]);
+        });
+
         describe("file", function() {
 
             it("CSV", async function() {

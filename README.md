@@ -25,6 +25,7 @@
   - [fromMySQL](#frommysql)
   - [fromMongoDB](#frommongodb)
   - [fromJSON](#fromjson)
+  - [fromCSV](#fromcsv)
   - [fromArray](#fromarray)
   - [toFile](#tofile)
   - [toJSON](#tojson)
@@ -428,6 +429,22 @@ const dataset = new ds.DataSet("test").fromJSON([{field1: 1, field2: "a"}, {fiel
 ```
 
 Note: Unless set earlier, as in the example above, the `name` of a new `DataSet` created using the `fromJSON` method will be `null`.
+
+### fromCSV
+The `fromCSV` method populates the current `DataSet` from a CSV-formatted string.
+
+Parameters:
+
+Name|Type|Description
+----|----|-----------
+`csv`|string|a CSV-formatted string where the first line contains the fields and the rest are the data
+
+Example:
+```js
+const dataset = new ds.DataSet("test").fromCSV("field1,field2\n1,\"a\"\n2,\"b\"");
+```
+
+Note: Unless set earlier, as in the example above, the `name` of a new `DataSet` created using the `fromCSV` method will be `null`.
 
 ### fromArray
 The `fromArray` method populates the current `DataSet` from an array.

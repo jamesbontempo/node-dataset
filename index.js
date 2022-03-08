@@ -117,6 +117,12 @@ class DataSet {
     fromJSON(json) { this.fromArray([this.name].concat(io.fromJSON(json))); return this; }
 
     /**
+     * Populate the DataSet from a CSV-formatted string
+     * @param {string} csv - a CSV-formatted string where the first line contains the fields and the rest are the data
+     */
+    fromCSV(csv) { this.fromArray([this.name].concat(io.fromCSV(csv))); return this; }
+
+    /**
      * Populate the DataSet using data in a file
      * @param {string} filePath - the path to the file containing the data from which to construct the DataSet
      * @param {string} type - the type of file/format of the data (json or csv)
