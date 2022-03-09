@@ -158,6 +158,11 @@ class DataSet {
     toCSV() { return io.toCSV(this.fields, this.data, {}); }
 
     /**
+     * Convert the DataSet to HTML format
+     */
+    toHTML() { return io.toHTML(this.fields, this.data); }
+
+    /**
      * Write the DataSet to a file
      * @param {string} filePath - the path to the output file
      * @param {string} type - the type of file/format of the data (json or csv)

@@ -900,6 +900,11 @@ describe("Input/Output functions", function() {
             expect(d.toCSV()).to.eql("id,code,name\n1,\"a\",\"Product A\"\n2,\"b\",\"Product B\"");
         });
 
+        it("HTML", function () {
+            const d = new ds.DataSet().fromArray(["test", ["id", "code", "name"], [[1, "a", "Product A"], [2, "b", "Product B"]]]);
+            expect(d.toHTML()).to.eql("<table><tr><td>id</td><td>code</td><td>name</td></tr><tr><td>1</td><td>a</td><td>Product A</td></tr><tr><td>2</td><td>b</td><td>Product B</td></tr></table>");
+        });
+
         describe("file", function() {
 
             it("CSV", async function () {

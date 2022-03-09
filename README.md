@@ -481,6 +481,7 @@ dataset.toFile("./data/test.csv", "json", {delimiter: "\t", quote: "'"});
 ```
 
 Note: The default option for JSON is `{pretty: false}` (i.e., unpretty)). The defaults for CSV is `{delimiter: ",", quote: "\""}`.
+
 ### toJSON
 
 The `toJSON` method converts the current `DataSet` to an array of JSON objects where the `fields` are the keys and the `data` are the values.
@@ -497,6 +498,14 @@ The `toCSV` method converts the current `DataSet` to a CSV-style, multi-line str
 Example:
 ```js
 const csv = dataset.toCSV();
+```
+### toHTML
+
+The `toHTML` method converts the current `DataSet` to an HTML table where the `fields` are the headers and the `data` are the rows.
+
+Example:
+```js
+const json = dataset.toHTML();
 ```
 
 ## SQL examples
