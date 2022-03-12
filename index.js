@@ -119,16 +119,17 @@ class DataSet {
     /**
      * Populate the DataSet from a CSV-formatted string
      * @param {string} csv - a CSV-formatted string where the first line contains the fields and the rest are the data
+     * @param {object} options - options for the file (header, delimiter and quote)
      */
-    fromCSV(csv) { this.fromArray([this.name].concat(io.fromCSV(csv))); return this; }
+    fromCSV(csv, options) { this.fromArray([this.name].concat(io.fromCSV(csv, options))); return this; }
 
     /**
      * Populate the DataSet using data in a file
      * @param {string} filePath - the path to the file containing the data from which to construct the DataSet
      * @param {string} type - the type of file/format of the data (json or csv)
-     * @param {object} options - options for the file (prettify json, set delimiter and quote for csv)
+     * @param {object} options - options for the file (delimiter and quote character for csv)
      */
-    async fromFile(filePath, type) { this.fromArray(await io.fromFile(filePath, type)); return this; }
+    async fromFile(filePath, type, options) { this.fromArray(await io.fromFile(filePath, type, options)); return this; }
 
     /**
      * Populate the DataSet using MySQL query results
@@ -154,8 +155,9 @@ class DataSet {
 
     /**
      * Convert the DataSet to CSV format
+     * @param {object} options - options for the file (header, delimiter and quote)
      */
-    toCSV() { return io.toCSV(this.fields, this.data, {}); }
+    toCSV(options) { return io.toCSV(this.fields, this.data, options); }
 
     /**
      * Convert the DataSet to HTML format
@@ -166,7 +168,7 @@ class DataSet {
      * Write the DataSet to a file
      * @param {string} filePath - the path to the output file
      * @param {string} type - the type of file/format of the data (json or csv)
-     * @param {object} options - options for the file (csv: delimiter and quote; json: pretty and space)
+     * @param {object} options - options for the file (csv: header, delimiter and quote; json: pretty and space)
      */
     async toFile(filePath, type, options) { await io.toFile(this, filePath, type, options); }
 }

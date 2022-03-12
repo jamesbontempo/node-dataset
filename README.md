@@ -357,6 +357,7 @@ Name|Type|Description
 ----|----|-----------
 `filePath`|string|the path to the file containing the data
 `type`|string|the type of file/format of the data ("json" or "csv")
+`options`|object|for CSV files, whether the first line contains the fields as a header, and the quote and delimiter characters (default is `{ header:true, quote: "\"", delimiter: "," }`)
 
 Example:
 ```js
@@ -438,10 +439,11 @@ Parameters:
 Name|Type|Description
 ----|----|-----------
 `csv`|string|a CSV-formatted string where the first line contains the fields and the rest are the data
+`options`|object|whether the first line contains the fields as a header, and the quote and delimiter characters (default is `{ header: true, quote: "\"", delimiter: "," }`)
 
 Example:
 ```js
-const dataset = new ds.DataSet("test").fromCSV("field1,field2\n1,\"a\"\n2,\"b\"");
+const dataset = new ds.DataSet("test").fromCSV("field1,field2\n1,'a'\n2,'b'", { quote: "'" });
 ```
 
 Note: Unless set earlier, as in the example above, the `name` of a new `DataSet` created using the `fromCSV` method will be `null`.
@@ -471,16 +473,14 @@ Name|Type|Description
 ----|----|-----------
 `filePath`|string|the path to the output file
 `type`|string|the type of file/format of the data ("json" or "csv")
-`options`|object|options for the file<br><br>for JSON `{pretty: (boolean), space: (integer)}`<br><br>for CSV `{delimiter: (string), quote: (string)}`
+`options`|object|options for the file (default for JSON `{ pretty: true, space: 2 }`, for CSV `{ header: true, delimiter: ",", quote: "\"" }`
 
 Example:
 ```js
-dataset.toFile("./data/test.json", "json", {pretty: true, space: 2});
+dataset.toFile("./data/test.json", "json", { pretty: true, space: 2 });
 
-dataset.toFile("./data/test.csv", "json", {delimiter: "\t", quote: "'"});
+dataset.toFile("./data/test.csv", "csv", { delimiter: "\t", quote: "'" });
 ```
-
-Note: The default option for JSON is `{pretty: false}` (i.e., unpretty)). The defaults for CSV is `{delimiter: ",", quote: "\""}`.
 
 ### toJSON
 
@@ -495,9 +495,13 @@ const json = dataset.toJSON();
 
 The `toCSV` method converts the current `DataSet` to a CSV-style, multi-line string where the first line contains the `fields` and the remaining lines comprise the `data`.
 
+Name|Type|Description
+----|----|-----------
+`options`|object|whether to print the fields as a header, and the quote and delimiter characters (default is `{ header: true, quote: "\"", delimiter: "," }`)
+
 Example:
 ```js
-const csv = dataset.toCSV();
+const csv = dataset.toCSV({ header: false, delimiter: "\t" });
 ```
 ### toHTML
 
