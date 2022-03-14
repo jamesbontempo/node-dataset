@@ -906,8 +906,8 @@ describe("Input/Output functions", function() {
         });
 
         it("XML", function () {
-            const d = new ds.DataSet().fromArray(["test", ["id", "code", "name"], [[1, "a", "Product A"], [2, "b", "Product B"]]]);
-            expect(d.toXML()).to.eql("<?xml version=\"1.0\" encoding=\"UTF-8\"?><dataset><record><id>1</id><code>a</code><name>Product A</name></record><record><id>2</id><code>b</code><name>Product B</name></record></dataset>");
+            const d = new ds.DataSet().fromArray(["test", ["id", "1", "name"], [[1, "a", "Product A"], [2, "b", "Product B"]]]);
+            expect(d.toXML()).to.eql("<?xml version=\"1.0\" encoding=\"UTF-8\"?><dataset><record><id>1</id><_1>a</_1><name>Product A</name></record><record><id>2</id><_1>b</_1><name>Product B</name></record></dataset>");
         });
 
         describe("file", function() {
