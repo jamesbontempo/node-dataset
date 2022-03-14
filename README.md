@@ -512,6 +512,15 @@ Example:
 const json = dataset.toHTML();
 ```
 
+### toXML
+
+The `toXML` method converts the current `DataSet` to an XML document.
+
+Example:
+```js
+const json = dataset.toXML();
+```
+
 ## SQL examples
 For those used to working with SQL, it might be helpful to see some examples of how to map SQL queries to a series of `DataSet` calls.
 
