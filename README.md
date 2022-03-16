@@ -457,11 +457,11 @@ Parameters:
 Name|Type|Description
 ----|----|-----------
 `html`|string|an HTML table
-`options`|object|whether the table contains column headers (default is `{ header: true }`)
+`options`|object|whether the table contains column headers, and an array of headers to use if it doesn't (default is `{ header: true }`)
 
 Example:
 ```js
-const dataset = new ds.DataSet("test").fromHTML("<table><thead><tr><th>id</th><th>code</th><th>name</th><th>date</th></tr></thead><tbody><tr><td>1</td><td>a</td><td>Product A</td><td>1/1/2022</td></tr></table>", { header: true });
+const dataset = new ds.DataSet("test").fromHTML("<table><tr><td>1</td><td>a</td><td>Product A</td><td>1/1/2022</td></tr></table>", { header: false, headers: ["id", "code","name"] });
 ```
 
 Note: Unless set earlier, as in the example above, the `name` of a new `DataSet` created using the `fromHTML` method will be `null`.
