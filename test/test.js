@@ -850,6 +850,13 @@ describe("Input/Output functions", function() {
             expect(d.data).to.eql([[1, "a", "Product A"], [2, "b", "Product B"]]);
         });
 
+        it("fromHTML", function () {
+            const d = new ds.DataSet().fromHTML("<table><thead><tr><th>id</th><th>code</th><th>name</th></tr></thead><tbody><tr><td>1</td><td>a</td><td>Product A</td></tr><tr><td>2</td><td>b</td><td>Product B</td></tr></table>", { header: true });
+            expect(d.name).to.equal(null);
+            expect(d.fields).to.eql(["id", "code", "name"]);
+            expect(d.data).to.eql([["1", "a", "Product A"], ["2", "b", "Product B"]]);
+        });
+
         describe("file", function() {
 
             it("CSV", async function() {

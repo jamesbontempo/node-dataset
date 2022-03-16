@@ -26,6 +26,7 @@
   - [fromMongoDB](#frommongodb)
   - [fromJSON](#fromjson)
   - [fromCSV](#fromcsv)
+  - [fromHTML](#fromhtml)
   - [fromArray](#fromarray)
   - [toFile](#tofile)
   - [toJSON](#tojson)
@@ -447,6 +448,23 @@ const dataset = new ds.DataSet("test").fromCSV("field1,field2\n1,'a'\n2,'b'", { 
 ```
 
 Note: Unless set earlier, as in the example above, the `name` of a new `DataSet` created using the `fromCSV` method will be `null`.
+
+### fromHTML
+The `fromHTML` method populates the current `DataSet` from an HTML table.
+
+Parameters:
+
+Name|Type|Description
+----|----|-----------
+`html`|string|an HTML table
+`options`|object|whether the table contains column headers (default is `{ header: true }`)
+
+Example:
+```js
+const dataset = new ds.DataSet("test").fromHTML("<table><thead><tr><th>id</th><th>code</th><th>name</th><th>date</th></tr></thead><tbody><tr><td>1</td><td>a</td><td>Product A</td><td>1/1/2022</td></tr></table>", { header: true });
+```
+
+Note: Unless set earlier, as in the example above, the `name` of a new `DataSet` created using the `fromHTML` method will be `null`.
 
 ### fromArray
 The `fromArray` method populates the current `DataSet` from an array.

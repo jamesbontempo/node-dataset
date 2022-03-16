@@ -124,6 +124,13 @@ class DataSet {
     fromCSV(csv, options) { this.fromArray([this.name].concat(io.fromCSV(csv, options))); return this; }
 
     /**
+     * Populate the DataSet from an HTML table
+     * @param {string} csv - a HTML table
+     * @param {object} options - options for the table (header)
+     */
+    fromHTML(html, options) { this.fromArray([this.name].concat(io.fromHTML(html, options))); return this; }
+
+    /**
      * Populate the DataSet using data in a file
      * @param {string} filePath - the path to the file containing the data from which to construct the DataSet
      * @param {string} type - the type of file/format of the data (json or csv)
