@@ -536,7 +536,7 @@ describe("Data manipulation methods", function() {
         describe("not like", function() {
 
             it("string", function() {
-                const d = a.filter("code not like '%A'");
+                const d = a.filter("code not like '*A'");
                 expect(d.name).to.equal("a");
                 expect(d.fields).to.eql(["id", "code", "name", "date"]);
                 expect(d.data).to.eql(

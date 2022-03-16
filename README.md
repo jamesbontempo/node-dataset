@@ -282,7 +282,7 @@ Example:
 ```js
 const new_dataset = dataset.filter("field1 > 100 and field2 like '%something%' and field3 is not null", true);
 ```
-Supported comparison operators and functions include: `=`, `<`, `>`, `<=`, `>=`, `!=`, `<>`, `(not) in` (e.g. `id in (1, 2, 3)` or `code not in ('a', 'b, 'c')`), `(not) like` (e.g., `state like 'cali%'` or `state not like '%york'`), `(not) between` (e.g., `id between 0 and 10` or `number not between 1000 and 2000`), `is (not) null` (e.g., `field1 is null` or `field2 is not null`).
+Supported comparison operators and functions include: `=`, `<`, `>`, `<=`, `>=`, `!=`, `<>`, `(not) in` (e.g. `id in (1, 2, 3)` or `code not in ('a', 'b, 'c')`), `(not) like` (e.g., `state like 'cali%'` or `state not like '*york'`), `(not) between` (e.g., `id between 0 and 10` or `number not between 1000 and 2000`), `is (not) null` (e.g., `field1 is null` or `field2 is not null`).
 
 A note about `useEval`: All filter conditions, when matched against data, are ultimately reduced to a boolean statement; for example `(true || (false && true))`. At this point, if `useEval` is `true`, the boolean statment will be evaluated using the `new Function()` constructor, which is actually safer than using `eval` directly. However, if this is concerning, when `useEval` is set to `false` the "boolean-parser" module will be used to evaluate the statement. In testing, setting `useEval` to true regularly cuts the execution time in half.
 
