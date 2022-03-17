@@ -457,7 +457,7 @@ Parameters:
 Name|Type|Description
 ----|----|-----------
 `html`|string|an HTML table
-`options`|object|whether the table contains column headers, and an array of headers to use if it doesn't (default is `{ header: true }`)
+`options`|object|whether the table contains column headers; an array of headers to use if it doesn't; and whether to "coerce" strings that look like numbers into numbers, ones that look like dates into ISO-style date strings, and set "NA" values to null (default is `{ header: true, coerce: true }`)
 
 Example:
 ```js

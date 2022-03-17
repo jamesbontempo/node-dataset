@@ -844,17 +844,17 @@ describe("Input/Output functions", function() {
         });
 
         it("fromCSV", function () {
-            const d = new ds.DataSet().fromCSV("id,code letter,name\n1,'a','Product A'\n2,'b','Product B'", { header: true, delimiter: ",", quote: "'" });
+            const d = new ds.DataSet().fromCSV("id,code letter space,name\n1,'a','Product A'\n2,'b','Product B'", { header: true, delimiter: ",", quote: "'" });
             expect(d.name).to.equal(null);
-            expect(d.fields).to.eql(["id", "code_letter", "name"]);
+            expect(d.fields).to.eql(["id", "code_letter_space", "name"]);
             expect(d.data).to.eql([[1, "a", "Product A"], [2, "b", "Product B"]]);
         });
 
         it("fromHTML", function () {
-            const d = new ds.DataSet().fromHTML("<table><tr><td>1</td><td>a</td><td>Product A</td></tr><tr><td>2</td><td>b</td><td>Product B</td></tr></table>", { header: false, headers: ["id", "code", "name"] });
+            const d = new ds.DataSet().fromHTML("<table><tr><td>1</td><td>a</td><td>Product A</td><td>1,245</td><td>12-25-1987</td></tr><tr><td>2</td><td>b</td><td>Product B</td><td>-0.234</td><td>2022/02/02 12:34:56</td></tr><tr><td>3</td><td>c</td><td>Product C</td><td></td><td>2001/08/27 1:22</td></tr></table>", { header: false, headers: ["id", "code", "name", "value", "date"], coerce: true });
             expect(d.name).to.equal(null);
-            expect(d.fields).to.eql(["id", "code", "name"]);
-            expect(d.data).to.eql([["1", "a", "Product A"], ["2", "b", "Product B"]]);
+            expect(d.fields).to.eql(["id", "code", "name", "value", "date"]);
+            expect(d.data).to.eql([[1, "a", "Product A", 1245, '1987-12-25 00:00:00'], [2, "b", "Product B", -0.234, "2022-02-02 12:34:56"], [3, "c", "Product C", null, "2001-08-27 01:22:00"]]);
         });
 
         describe("file", function() {
