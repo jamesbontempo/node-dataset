@@ -844,9 +844,9 @@ describe("Input/Output functions", function() {
         });
 
         it("fromCSV", function () {
-            const d = new ds.DataSet().fromCSV("id,code letter space,name\n1,'a','Product A'\n2,'b','Product B'", { header: true, delimiter: ",", quote: "'" });
+            const d = new ds.DataSet().fromCSV("id,code letter/space1,name\n1,'a','Product A'\n2,'b','Product B'", { header: true, delimiter: ",", quote: "'" });
             expect(d.name).to.equal(null);
-            expect(d.fields).to.eql(["id", "code_letter_space", "name"]);
+            expect(d.fields).to.eql(["id", "code_letter_space1", "name"]);
             expect(d.data).to.eql([[1, "a", "Product A"], [2, "b", "Product B"]]);
         });
 
