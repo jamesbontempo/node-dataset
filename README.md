@@ -440,7 +440,7 @@ Parameters:
 Name|Type|Description
 ----|----|-----------
 `csv`|string|a CSV-formatted string where the first line contains the fields and the rest are the data
-`options`|object|whether the first line contains the fields as a header, and the quote and delimiter characters (default is `{ header: true, quote: "\"", delimiter: "," }`)
+`options`|object|whether the first line contains the fields as a header; the quote and delimiter characters; and whether to "coerce" strings that look like numbers into numbers, ones that look like dates into ISO-style date strings, and set "NA" values to null (default is `{ header: true, quote: "\"", delimiter: ",", coerce: true }`)
 
 Example:
 ```js
