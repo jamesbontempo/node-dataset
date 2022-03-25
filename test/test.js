@@ -899,7 +899,7 @@ describe("Input/Output functions", function() {
 
         it("JSON", function () {
             const d = new ds.DataSet().fromArray(["test", ["id", "code", "name"], [[1, undefined, "Product A"], [2, "b", "Product B"]]]);
-            expect(d.toJSON()).to.eql([{id: 1, name: "Product A"}, {id: 2, code: "b", name: "Product B"}]);
+            expect(d.toJSON()).to.eql([{id: 1, code: null, name: "Product A"}, {id: 2, code: "b", name: "Product B"}]);
         });
 
         it("CSV", function () {
