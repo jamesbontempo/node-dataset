@@ -852,9 +852,9 @@ describe("Input/Output functions", function() {
         });
 
         it("XLSX", async function() {
-            const d = await new ds.DataSet().fromXLSX(fs.readFileSync(path.join(__dirname, "test.xlsx")), { range: "B2:D5"});
+            const d = await new ds.DataSet().fromXLSX(fs.readFileSync(path.join(__dirname, "test.xlsx")), { header: false, range: "B3:D5"});
             expect(d.name).to.equal(null);
-            expect(d.fields).to.eql(["id", "code", "name"]);
+            expect(d.fields).to.eql(["1", "2", "3"]);
             expect(d.data).to.eql([[null, "a", "Product A"], [2, "b", "Product B"], [3, "c", "Product C"]]);
         });
 
