@@ -840,7 +840,7 @@ describe("Input/Output functions", function() {
             const d = new ds.DataSet().fromJSON([{id: 1, name: "Product A"}, {id: 2, code: "b", name: "Product B"}]);
             expect(d.name).to.equal(null);
             expect(d.fields).to.eql(["id", "name", "code"]);
-            expect(d.data).to.eql([[1, "Product A", ], [2, "Product B", "b"]]);
+            expect(d.data).to.eql([[1, "Product A", null], [2, "Product B", "b"]]);
         });
 
         it("fromCSV", function () {
@@ -870,7 +870,14 @@ describe("Input/Output functions", function() {
                 const d = await new ds.DataSet().fromFile(path.join(__dirname, "test.json"), "json");
                 expect(d.name).to.equal("test");
                 expect(d.fields).to.eql(["id", "name", "code"]);
-                expect(d.data).to.eql([[1, "Product A", ], [2, "Product B", "b"]]);
+                expect(d.data).to.eql([[1, "Product A", null], [2, "Product B", "b"]]);
+            });
+
+            it("XLSX", async function() {
+                const d = await new ds.DataSet().fromFile(path.join(__dirname, "test.xlsx"), "xlsx", { range: "B2:D5"});
+                expect(d.name).to.equal("test");
+                expect(d.fields).to.eql(["id", "code", "name"]);
+                expect(d.data).to.eql([[null, "a", "Product A"], [2, "b", "Product B"], [3, "c", "Product C"]]);
             });
 
         });

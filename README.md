@@ -358,13 +358,13 @@ Name|Type|Description
 ----|----|-----------
 `filePath`|string|the path to the file containing the data
 `type`|string|the type of file/format of the data ("json" or "csv")
-`options`|object|for CSV files, whether the first line contains the fields as a header, and the quote and delimiter characters (default is `{ header:true, quote: "\"", delimiter: "," }`)
+`options`|object|for CSV files, whether the first line contains the fields as a header, and the quote and delimiter characters (default is `{ header:true, quote: "\"", delimiter: "," }`); for XLSX files, whether the first row of data contains the fields, the 1-based index of the worksheet containing the data, and, if the entire sheet does not contain data, the Excel-style range (e.g., "B2:E12") that contains the data (default is `{ header: true, worksheet: 1 }`)
 
 Example:
 ```js
-const dataset = await new ds.DataSet().fromFile("./data/test.json", "json");
+const dataset = await new ds.DataSet().fromFile("./data/test.xlsx", "xlsx", { header: true, worksheet: 2, range: B2:C5 });
 
-new ds.DataSet().fromFile("./data/test.json", "json").then( ...do something with the DataSet... );
+new ds.DataSet().fromFile("./data/test.xlsx", "xlsx", { header: true, worksheet: 2, range: B2:C5 }).then( ...do something with the DataSet... );
 ```
 
 Note: the `name` of the new `DataSet` will be set to the name of the data file without its extension.
