@@ -1,6 +1,7 @@
 const expect = require("chai").expect;
 const ds = require("../index.js");
 const path = require("path");
+const fs = require("fs");
 
 describe("Constructor", function() {
 
@@ -848,6 +849,13 @@ describe("Input/Output functions", function() {
             expect(d.name).to.equal(null);
             expect(d.fields).to.eql(["id", "code_letter_space1", "name"]);
             expect(d.data).to.eql([[1, "a", "Product A"], [2, "b", "Product B"]]);
+        });
+
+        it("XLSX", async function() {
+            const d = await new ds.DataSet().fromXLSX(fs.readFileSync(path.join(__dirname, "test.xlsx")), { range: "B2:D5"});
+            expect(d.name).to.equal(null);
+            expect(d.fields).to.eql(["id", "code", "name"]);
+            expect(d.data).to.eql([[null, "a", "Product A"], [2, "b", "Product B"], [3, "c", "Product C"]]);
         });
 
         it("fromHTML", function () {

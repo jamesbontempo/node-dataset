@@ -124,6 +124,13 @@ class DataSet {
     fromCSV(csv, options) { this.fromArray([this.name].concat(io.fromCSV(csv, options))); return this; }
 
     /**
+     * Populate the DataSet from an Excel file buffer
+     * @param {object} xlsx - an Excel file buffer
+     * @param {object} options - options for the file (header, worksheet, range)
+     */
+    fromXLSX(xlsx, options) { this.fromArray([this.name].concat(io.fromXLSX(xlsx, options))); return this; }
+
+    /**
      * Populate the DataSet from an HTML table
      * @param {string} csv - a HTML table
      * @param {object} options - options for the table (header)
