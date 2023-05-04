@@ -28,10 +28,31 @@ describe("Constructor", function() {
             expect(d.data).to.eql([]);
         });
 
+        it("fields blank", function() {
+            const d = new ds.DataSet("test", "");
+            expect(d.name).to.equal("test");
+            expect(d.fields).to.eql([]);
+            expect(d.data).to.eql([]);
+        });
+
         it("fields array", function() {
             const d = new ds.DataSet("test", ["id", "code", "name"]);
             expect(d.name).to.equal("test");
             expect(d.fields).to.eql(["id", "code", "name"]);
+            expect(d.data).to.eql([]);
+        });
+
+        it("fields undefined", function() {
+            const d = new ds.DataSet("test");
+            expect(d.name).to.equal("test");
+            expect(d.fields).to.eql([]);
+            expect(d.data).to.eql([]);
+        });
+
+        it("fields object", function() {
+            const d = new ds.DataSet("test", {});
+            expect(d.name).to.equal("test");
+            expect(d.fields).to.eql([]);
             expect(d.data).to.eql([]);
         });
 
@@ -79,6 +100,16 @@ describe("Get/Set methods and count", function() {
             expect(d.name).to.equal("foo");
         });
 
+        it("set blank", function() {
+            d.setName("")
+            expect(d.name).to.equal(null);
+        });
+
+        it("set undefined", function() {
+            d.setName()
+            expect(d.name).to.equal(null);
+        });
+
     });
 
     describe("fields", function() {
@@ -92,8 +123,18 @@ describe("Get/Set methods and count", function() {
             expect(d.fields).to.eql(["new_id", "new_code", "new_name"]);
         });
 
+        it("set (string blank)", function() {
+            d.setFields("");
+            expect(d.fields).to.eql(["new_id", "new_code", "new_name"]);
+        });
+
         it("set (array)", function() {
             d.setFields(["newer_id", "newer_code", "newer_name"]);
+            expect(d.fields).to.eql(["newer_id", "newer_code", "newer_name"]);
+        });
+
+        it("set (array empty)", function() {
+            d.setFields([]);
             expect(d.fields).to.eql(["newer_id", "newer_code", "newer_name"]);
         });
 
@@ -108,6 +149,26 @@ describe("Get/Set methods and count", function() {
         it("set", function() {
             d.setData([[3, "c", "Product C"], [4, "d", null]]);
             expect(d.data).to.eql([[3, "c", "Product C"], [4, "d", null]]);
+        });
+
+        it("set (undefined)", function() {
+            d.setData();
+            expect(d.data).to.eql([[3, "c", "Product C"], [4, "d", null]]);
+        });
+
+        it("set (not array)", function() {
+            d.setData("");
+            expect(d.data).to.eql([[3, "c", "Product C"], [4, "d", null]]);
+        });
+
+        it("set (array smaller)", function() {
+            d.setData([[3, "c"], [4, "d"]]);
+            expect(d.data).to.eql([[3, "c", "Product C"], [4, "d", null]]);
+        });
+
+        it("set (array empty)", function() {
+            d.setData([]);
+            expect(d.data).to.eql([]);
         });
 
     });
@@ -150,6 +211,16 @@ describe("Data manipulation methods", function() {
         ]
     );
 
+    const e = new ds.DataSet(
+        "e",
+        "id, code, name, date",
+        [
+            [1, "h", "Product H", "2019-10-01"],
+            [1, "x", null, "2019-09-01"],
+            [2, "x", null, "2019-09-01"]
+        ]
+    );
+
     it("select", function() {
         const d = a.select("id, code as new_code");
         expect(d.name).to.equal("a");
@@ -159,13 +230,14 @@ describe("Data manipulation methods", function() {
 
     describe("join", function() {
 
-        it("inner (a, b, c)", function() {
-            const d = a.join(b, "inner", "id", "id").join(c, "inner", "a.id", "id");
+        it("inner (a, b, e)", function() {
+            const d = a.join(b, "inner", "id", "id").join(e, "inner", "a.id", "id");
             expect(d.name).to.equal(null);
-            expect(d.fields).to.eql(["a.id", "a.code", "a.name", "a.date", "b.id", "b.code", "b.name", "b.date", "c.id", "c.code", "c.name", "c.date"]);
+            expect(d.fields).to.eql(["a.id", "a.code", "a.name", "a.date", "b.id", "b.code", "b.name", "b.date", "e.id", "e.code", "e.name", "e.date"]);
             expect(d.data).to.eql(
                 [
                     [1, "a", "Product A", null, 1, "e", "Product E", "2019-11-01", 1, "h", "Product H", "2019-10-01"],
+                    [1, "a", "Product A", null, 1, "e", "Product E", "2019-11-01", 1, "x", null, "2019-09-01"],
                     [2, "b", "Product B", "2020-01-01", 2, "f", "Product F", "2020-02-01", 2, "x", null, "2019-09-01"]
                 ]
             );
@@ -228,7 +300,7 @@ describe("Data manipulation methods", function() {
         describe("=", function() {
 
             it("number", function() {
-                const d = a.filter("id = 1");
+                const d = a.filter("id = 1", true);
                 expect(d.name).to.equal("a");
                 expect(d.fields).to.eql(["id", "code", "name", "date"]);
                 expect(d.data).to.eql([[1, "a", "Product A", null]])
@@ -674,15 +746,14 @@ describe("Data manipulation methods", function() {
     describe("sort", function() {
 
         it("asc", function () {
-            const d = a.sort("date asc");
-            expect(d.name).to.equal("a");
+            const d = e.sort("id asc");
+            expect(d.name).to.equal("e");
             expect(d.fields).to.eql(["id", "code", "name", "date"]);
             expect(d.data).to.eql(
                 [
-                    [1, "a", "Product A", null],
-                    [2, "b", "Product B", "2020-01-01"],
-                    [4, "d", null, "2020-03-01"],
-                    [3, "c", "Product C", "2020-04-01"]
+                    [1, "h", "Product H", "2019-10-01"],
+                    [1, "x", null, "2019-09-01"],
+                    [2, "x", null, "2019-09-01"]
                 ]
             );
         });
@@ -749,49 +820,56 @@ describe("Data manipulation methods", function() {
             expect(b.name).to.equal("aggregate");
             expect(b.fields).to.eql(["id", "count"]);
             expect(b.data).to.eql([[1, 3], [2, 4]]);
-        })
+        });
 
         it("min", function() {
             const b = a.aggregate("id, min(number)", "id");
             expect(b.name).to.equal("aggregate");
             expect(b.fields).to.eql(["id", "min(number)"]);
             expect(b.data).to.eql([[1, 1], [2, 2]]);
-        })
+        });
 
         it("max", function() {
             const b = a.aggregate("id, max(number)", "id");
             expect(b.name).to.equal("aggregate");
             expect(b.fields).to.eql(["id", "max(number)"]);
             expect(b.data).to.eql([[1, 3], [2, 8]]);
-        })
+        });
+
+        it("sum", function() {
+            const b = a.aggregate("id, sum(number) as Sum", "id");
+            expect(b.name).to.equal("aggregate");
+            expect(b.fields).to.eql(["id", "Sum"]);
+            expect(b.data).to.eql([[1, 6], [2, 20]]);
+        });
 
         it("avg", function() {
             const b = a.aggregate("id, avg(number) as Average", "id");
             expect(b.name).to.equal("aggregate");
             expect(b.fields).to.eql(["id", "Average"]);
             expect(b.data).to.eql([[1, 2], [2, 5]]);
-        })
+        });
 
         it("var", function() {
             const b = a.aggregate("id, var(number)", "id");
             expect(b.name).to.equal("aggregate");
             expect(b.fields).to.eql(["id", "var(number)"]);
             expect(b.data).to.eql([[1, 2/3], [2, 20/4]]);
-        })
+        });
 
         it("std", function() {
             const b = a.aggregate("id, std(number)", "id");
             expect(b.name).to.equal("aggregate");
             expect(b.fields).to.eql(["id", "std(number)"]);
             expect(b.data).to.eql([[1, Math.sqrt(2/3)], [2, Math.sqrt(20/4)]]);
-        })
+        });
 
         it("multiple (count, std)", function() {
             const b = a.aggregate("id, count(id), std(number)", "id");
             expect(b.name).to.equal("aggregate");
             expect(b.fields).to.eql(["id", "count(id)", "std(number)"]);
             expect(b.data).to.eql([[1, 3, Math.sqrt(2/3)], [2, 4, Math.sqrt(20/4)]]);
-        })
+        });
 
     });
 
@@ -865,13 +943,34 @@ describe("Input/Output functions", function() {
             expect(d.data).to.eql([[1, "a", "Product A", 1245, '1987-12-25 00:00:00'], [2, "b", "Product B", -0.234, "2022-02-02 12:34:56"], [3, "c", "Product C", null, "2001-08-27 01:22:00"]]);
         });
 
+        it("fromHTML (with header)", function () {
+            const d = new ds.DataSet().fromHTML("<table><tr><th>id</th><th>code</th><th>name</th><th>value</th><th>date</th></tr><tr><td>1</td><td>a</td><td>Product A</td><td>1,245</td><td>12-25-1987</td></tr><tr><td>2</td><td>b</td><td>Product B</td><td>-0.234</td><td>2022/02/02 12:34:56</td></tr><tr><td>3</td><td>c</td><td>Product C</td><td></td><td>2001/08/27 1:22</td></tr></table>", { header: true, coerce: true });
+            expect(d.name).to.equal(null);
+            expect(d.fields).to.eql(["id", "code", "name", "value", "date"]);
+            expect(d.data).to.eql([[1, "a", "Product A", 1245, '1987-12-25 00:00:00'], [2, "b", "Product B", -0.234, "2022-02-02 12:34:56"], [3, "c", "Product C", null, "2001-08-27 01:22:00"]]);
+        });
+
+        it("fromHTML (no header)", function () {
+            const d = new ds.DataSet().fromHTML("<table><tr><td>1</td><td>a</td><td>Product A</td><td>1,245</td><td>12-25-1987</td></tr><tr><td>2</td><td>b</td><td>Product B</td><td>-0.234</td><td>2022/02/02 12:34:56</td></tr><tr><td>3</td><td>c</td><td>Product C</td><td></td><td>2001/08/27 1:22</td></tr></table>", { header: false, coerce: true });
+            expect(d.name).to.equal(null);
+            expect(d.fields).to.eql(["1", "2", "3", "4", "5"]);
+            expect(d.data).to.eql([[1, "a", "Product A", 1245, '1987-12-25 00:00:00'], [2, "b", "Product B", -0.234, "2022-02-02 12:34:56"], [3, "c", "Product C", null, "2001-08-27 01:22:00"]]);
+        });
+
         describe("file", function() {
 
-            it("CSV", async function() {
+            it("CSV (with header)", async function() {
                 const d = await new ds.DataSet().fromFile(path.join(__dirname, "/test.csv"), "csv");
                 expect(d.name).to.equal("test");
                 expect(d.fields).to.eql(["id", "code", "name"]);
-                expect(d.data).to.eql([[null, "a", "Product A"], [2, "b", "Product B"], [3, "c", "Product C"]]);
+                expect(d.data).to.eql([[null, "a", "Product A"], [2, null, "Product B"], [3, "c", "Product C"]]);
+            });
+
+            it("CSV (no header, no coerce)", async function() {
+                const d = await new ds.DataSet().fromFile(path.join(__dirname, "/no_header.csv"), "csv", { header: false, coerce: false });
+                expect(d.name).to.equal("no_header");
+                expect(d.fields).to.eql(["1", "2", "3"]);
+                expect(d.data).to.eql([[null, "a", "Product A"], ["2", "b", "Product B"], ["3", "c", "Product C"]]);
             });
 
             it("JSON", async function() {
@@ -900,7 +999,7 @@ describe("Input/Output functions", function() {
             });
 
             it("MongoDB", async function() {
-                const d = await new ds.DataSet().fromMongoDB("mongodb://localhost:27017", "test", "test", {}, {"_id": 0});
+                const d = await new ds.DataSet().fromMongoDB("mongodb://127.0.0.1:27017", "test", "test", {}, {"_id": 0});
                 expect(d.name).to.equal(null);
                 expect(d.fields).to.eql(["id", "code", "name"]);
                 expect(d.data.sort((a, b) => { if (a[0] < b[0]) return -1; if (a[0] > b[0]) return 1; return 0; })).to.eql([[1, "a", "Product A"], [2, "b", "Product B"]]);
@@ -918,8 +1017,8 @@ describe("Input/Output functions", function() {
         });
 
         it("CSV", function () {
-            const d = new ds.DataSet().fromArray(["test", ["id", "code", "name"], [[1, "a", "Product A"], [2, "b", "Product B"]]]);
-            expect(d.toCSV({ header: false, delimiter: "\t" })).to.eql("1\t\"a\"\t\"Product A\"\n2\t\"b\"\t\"Product B\"");
+            const d = new ds.DataSet().fromArray(["test", ["id", "code", "name"], [[1, null, "Product A"], [2, "", "Product B"]]]);
+            expect(d.toCSV({ header: false, delimiter: "\t" })).to.eql("1\t\t\"Product A\"\n2\t\"\"\t\"Product B\"");
         });
 
         it("HTML", function () {

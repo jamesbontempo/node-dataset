@@ -1,4 +1,4 @@
 id,code,name
 ,"a","Product A"
-2,"b","Product B"
+2,,"Product B"
 3,"c","Product C"
