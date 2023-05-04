@@ -357,7 +357,7 @@ Parameters:
 Name|Type|Description
 ----|----|-----------
 `filePath`|string|the path to the file containing the data
-`type`|string|the type of file/format of the data ("json" or "csv")
+`type`|string|the type of file/format of the data ("json", "csv", or "xlsx")
 `options`|object|for CSV files, whether the first line contains the fields as a header, and the quote and delimiter characters (default is `{ header:true, quote: "\"", delimiter: "," }`); for XLSX files, whether the first row of data contains the fields, the 1-based index of the worksheet containing the data, and, if the entire sheet does not contain data, the Excel-style range (e.g., "B2:E12") that contains the data (default is `{ header: true, worksheet: 1 }`)
 
 Example:
