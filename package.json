@@ -1,6 +1,6 @@
 {
   "name": "node-dataset",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "A Node.js module for working with data sets created in code, loaded from files, or retrieved from a database.",
   "main": "index.js",
   "directories": {
@@ -37,18 +37,18 @@
   },
   "dependencies": {
     "boolean-parser": "0.0.2",
-    "mongodb": "^3.5.7",
+    "mongodb": "^3.7.4",
     "mysql": "^2.18.1",
-    "node-html-parser": "^5.3.3",
-    "xlsx": "file:vendor/xlsx-0.19.3.tgz"
+    "node-html-parser": "^5.4.2",
+    "xlsx": "file:vendor/xlsx-0.20.0.tgz"
   },
   "bundleDependencies": [
     "xlsx"
   ],
   "devDependencies": {
-    "chai": "^4.2.0",
-    "eslint": "^7.0.0",
-    "mocha": "^9.2.1",
+    "chai": "^4.3.10",
+    "eslint": "^7.32.0",
+    "mocha": "^9.2.2",
     "nyc": "^15.1.0"
   }
 }
