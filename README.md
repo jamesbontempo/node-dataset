@@ -115,8 +115,8 @@ A `DataSet` can also be joined with another `DataSet` to create new a `DataSet`:
 
  ```js
  const fips_education_ = fips
-  .join("education", "inner", "fips", "fips")
-  .join("population", "inner", "fips", "fips.fips");
+  .join(education, "inner", "fips", "fips")
+  .join(population, "inner", "fips", "fips.fips");
  ```
 
 This example demonstrates another important thing: when a `DataSet` is joined with another `DataSet`, the fields in the resulting `DataSet` are named by combining the name of each underlying `DataSet` and its fields (that's why the second join refers to `fips.fips` in the example above). This ensures that there aren't any problems if the same field name is used in more than one `DataSet`.
