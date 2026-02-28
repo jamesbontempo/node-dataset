@@ -37,18 +37,18 @@
   },
   "dependencies": {
     "boolean-parser": "0.0.2",
-    "mongodb": "^3.7.4",
+    "mongodb": "^7.1.0",
     "mysql": "^2.18.1",
-    "node-html-parser": "^5.4.2",
+    "node-html-parser": "^7.0.2",
     "xlsx": "file:vendor/xlsx-0.20.2.tgz"
   },
   "bundleDependencies": [
     "xlsx"
   ],
   "devDependencies": {
-    "chai": "^4.3.10",
-    "eslint": "^7.32.0",
-    "mocha": "^11.1.0",
-    "nyc": "^15.1.0"
+    "chai": "^6.2.2",
+    "eslint": "^10.0.2",
+    "mocha": "^11.7.5",
+    "nyc": "^18.0.0"
   }
 }
